@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 15:22:38 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/10/29 21:02:43 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/10/30 10:48:23 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ class AForm {
     /** ----- END ORTHODOX -------- */
 
     AForm(std::string name, int gradeToSign, int gradeToExecute);
-    std::string getName();
-    int getGradeToSign() ;
-    int getGradeToExecute();
-    bool getIsSigned();
+    std::string getName() const;
+    int getGradeToSign() const;
+    int getGradeToExecute() const;
+    bool getIsSigned() const;
     void beSigned(Bureaucrat & bureaucrat) ;
-    virtual execute(Bureaucrat const & executor) const = 0;
+    virtual void execute(Bureaucrat const & executor) const = 0;
     class GradeTooHighException : public std::exception {
       const char* what() const throw () {
         return "Grade too high";

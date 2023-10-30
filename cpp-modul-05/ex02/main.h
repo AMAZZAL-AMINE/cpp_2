@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 11:36:05 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/10/29 16:41:38 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/10/30 10:49:11 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,11 @@
 # define MAIN_H
 
 # include <iostream>
+#include <fstream>
 #include "Bureaucrat.hpp"
 #include "AForm.hpp"
-
+#include "ShrubberyCreationForm.hpp"
+#include "RobotomyRequestForm.hpp"
+#include "PresidentialPardonForm.hpp"
 
 #endif

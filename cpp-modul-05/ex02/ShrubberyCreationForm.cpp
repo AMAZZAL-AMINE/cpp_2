@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 20:18:01 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/10/29 21:06:37 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/10/30 10:51:28 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ ShrubberyCreationForm::ShrubberyCreationForm(std::string target) : AForm("Shrubb
 }
 
 void ShrubberyCreationForm::execute(Bureaucrat const & executor) const {
-  if (biro.getGrade() > this->getGradeToExecute() || !this->getIsSigned())
+  if (executor.getGrade() > this->getGradeToExecute() || !this->getIsSigned())
     throw AForm::GradeTooLowException();
   std::ofstream file;
   file.open(this->target + "_shrubbery");

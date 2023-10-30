@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 15:38:16 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/10/29 16:46:33 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/10/30 10:48:03 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,19 @@ AForm::AForm(std::string name, int gradeToSign, int gradeToExecute) : name(name)
   }
 }
 
-std::string AForm::getName() {
+std::string AForm::getName()  const {
   return this->name;
 }
 
-int  AForm::getGradeToSign() {
+int  AForm::getGradeToSign() const {
   return this->gradeToSign;
 }
 
-int  AForm::getGradeToExecute() {
+int  AForm::getGradeToExecute() const {
   return this->gradeToExecute;
 }
 
-bool AForm::getIsSigned() {
+bool AForm::getIsSigned() const {
   return this->is_signed;
 }
 

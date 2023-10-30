@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/28 11:44:41 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/10/29 20:12:53 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/10/30 10:56:57 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ class Bureaucrat {
     void incrementGrade();
     void decrementGrade();
     void signForm(AForm & form) const;
-  
+    void executeForm(AForm const & form) const;
     class GradeTooHighException : public std::exception {
       const char *what () const throw () {
         return "nah, you try a biger grade";

@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/29 20:23:37 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/10/29 21:17:31 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/10/30 10:38:32 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 
 RobotomyRequestForm::RobotomyRequestForm() : AForm("RobotomyRequestForm", 72, 45) {}
 
-RobotomyRequestForm::RobotomyRequestForm(RobotomyRequestForm & copy) : AForm(copy) {
+RobotomyRequestForm::RobotomyRequestForm(RobotomyRequestForm & copy) : AForm("RobotomyRequestForm", 72, 45) {
   *this = copy;
 }
 
@@ -44,8 +44,8 @@ RobotomyRequestForm::RobotomyRequestForm(std::string target) : AForm("RobotomyRe
   this->target = target;
 }
 
-void RobotomyRequestForm::execute(Bureaucrat const & executor) const {
-  if (biro.grade > this->getGradeToExecute() || !this->getIsSigned())
+void RobotomyRequestForm::execute(Bureaucrat const & biro) const {
+  if (biro.getGrade() > this->getGradeToExecute() || !this->getIsSigned())
     throw AForm::GradeTooLowException();
   std::cout << this->target << " has been robotomized successfully 50% of the time." << std::endl;
 }
