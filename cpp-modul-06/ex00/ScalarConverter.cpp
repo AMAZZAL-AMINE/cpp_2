@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:10:21 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/01 18:18:30 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/01 19:23:06 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char ScalarConverter::toChar() {
 }
 
 int ScalarConverter::toInt() {
-	if (isChar(this->str))  {
+	if (str.length() > 1 && isChar(this->str))  {
 		const std::string err = "impossible";
 		throw err;
 	}
