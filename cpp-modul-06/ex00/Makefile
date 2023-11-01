@@ -6,11 +6,11 @@
 #    By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/28 11:35:17 by mamazzal          #+#    #+#              #
-#    Updated: 2023/10/31 16:25:12 by mamazzal         ###   ########.fr        #
+#    Updated: 2023/11/01 16:55:57 by mamazzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME=momy
+NAME=convert
 
 SRC= main.cpp ScalarConverter.cpp
 OBJ=$(SRC:.cpp=.o)
