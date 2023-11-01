@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:10:21 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/01 19:23:06 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/01 20:32:48 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,21 @@ ScalarConverter::ScalarConverter(std::string str) {
 
 int ScalarConverter::isChar(std::string str) {
 	unsigned long i = 0;
+	int found = 0;
+	if (str == "nan"  ||  str == "+inf"  || str == "-inf")
+		return 0;
 	while (i < str.length()) {
-			if ((str[i] >= 'a' &&  str[i] <= 'z') || (str[i] >= 'A' &&  str[i] <= 'Z'))
-				i++;
-			else 
-				return 0;
+			if ((str[i] >= 'a' &&  str[i] <= 'z') || (str[i] >= 'A' &&  str[i] <= 'Z')) {
+					found += 1;
+					break;
+			}
+			i++;
 	}
-	return 1;
+	if (found  && str.length() > 1 && str[i] != 'f')
+		return 1;
+	else if (found == 1 && str[i] == 'f')
+		return 0;
+	return 0;
 }
 
 int StringToInt(std::string str) {
@@ -54,13 +62,17 @@ char ScalarConverter::toChar() {
 }
 
 int ScalarConverter::toInt() {
-	if (str.length() > 1 && isChar(this->str))  {
+	if ((str.length() > 1 && isChar(this->str)) || (str == "+inf"  || str == "-inf" || str == "nan"))  {
 		const std::string err = "impossible";
 		throw err;
 	}
 	int res = 0;
 	int count = 0;
-  while (this->str[count] != '\0' && std::isdigit(this->str[count])) {
+  if (std::isalpha(this->str[0]) && this->str.length() == 1) {
+		this->_int = (int)this->str[0];
+		return this->_int;
+	}
+	while (this->str[count] != '\0' && std::isdigit(this->str[count])) {
     res = res * 10 + str[count] - '0';
     count++;
   }
@@ -69,16 +81,32 @@ int ScalarConverter::toInt() {
 }
 
 float  ScalarConverter::toFloat() {
+	if (this->str.length() > 1 && isChar(this->str))  {
+		const std::string err = "impossible";
+		throw err;
+	}
+	if (std::isalpha(this->str[0]) && this->str.length() == 1) {
+		this->_float = (float)this->str[0];
+		return this->_float;
+	}
 	this->_float = std::strtod(this->str.c_str(), NULL);
 	return this->_float;
 }
 
 double  ScalarConverter::toDouble() {
+	if (str.length() > 1 && isChar(this->str))  {
+		const std::string err = "impossible";
+		throw err;
+	}
+	if (std::isalpha(this->str[0]) && this->str.length() == 1) {
+		this->_double = (double)this->str[0];
+		return this->_double;
+	}
 	this->_double = std::strtod(this->str.c_str(), NULL);
 	return this->_double;
 }
 
-int ScalarConverter::getNbrSetprecision() {
+int ScalarConverter::getNbrSetprecision() { //error here choolddd solve a brother
 	int count = this->str.find('.');
 	if (count == 0)
 		return 1;
@@ -107,7 +135,17 @@ void ScalarConverter::convert(std::string str) {
 	} catch(const std::string & a) {
 		std::cerr << a << '\n';
 	}
+
 	std::cout << std::fixed;
-	std::cout << std::setprecision(nbrSetprecision) << "float: "    << this->toFloat() << "f" << std::endl;
-	std::cout << std::setprecision(nbrSetprecision) << "double: "   << this->toDouble() << std::endl;
+	try {	
+		std::cout << std::setprecision(nbrSetprecision) << "float: "    << this->toFloat() << "f" << std::endl;
+	} catch(const std::string & a) {
+		std::cerr << a << '\n';
+	}
+
+	try {	
+		std::cout << std::setprecision(nbrSetprecision) << "double: "   << this->toDouble() << std::endl;
+	} catch(const std::string & a) {
+		std::cerr << a << '\n';
+	}
 }
