@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:10:21 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/01 20:32:48 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/02 15:17:03 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,30 @@ int StringToInt(std::string str) {
   }
   return res;
 }
+int isPrint(std::string str) {
+	int nbr  = StringToInt(str);
+	if (nbr >= 32 && nbr <= 126)
+		return 1;
+	return 0;
+}
+
+int convertToASCII(std::string letter) {
+	int i = 0;
+	int result = 0;
+	if (letter.length() == 1 && isPrint(letter))
+		return (int)letter[0];
+	while (letter[i] != '\0') {
+		result = result * 10 + letter[i] - '0';
+		i++;
+	}
+	return result;
+}
 
 char ScalarConverter::toChar() {
-	int char_ = StringToInt(this->str);
-	bool isAscii = (char_ >= 65 && char_ <= 90) || (char_ >= 97 && char_ <= 122);
-	if ((this->str.length() == 1 && std::isalpha(this->str[0])) || isAscii) {
-		if (isAscii)
-			this->_char = (char)char_;
-		else 
-			this->_char = this->str[0];
+	int char_  = convertToASCII(this->str);
+	bool isAscii = isPrint(str);
+	if (isAscii) {
+		this->_char = char_;
 		return this->_char;
 	}
 	else if (this->str.length() > 1)
@@ -68,10 +83,6 @@ int ScalarConverter::toInt() {
 	}
 	int res = 0;
 	int count = 0;
-  if (std::isalpha(this->str[0]) && this->str.length() == 1) {
-		this->_int = (int)this->str[0];
-		return this->_int;
-	}
 	while (this->str[count] != '\0' && std::isdigit(this->str[count])) {
     res = res * 10 + str[count] - '0';
     count++;
@@ -85,10 +96,6 @@ float  ScalarConverter::toFloat() {
 		const std::string err = "impossible";
 		throw err;
 	}
-	if (std::isalpha(this->str[0]) && this->str.length() == 1) {
-		this->_float = (float)this->str[0];
-		return this->_float;
-	}
 	this->_float = std::strtod(this->str.c_str(), NULL);
 	return this->_float;
 }
@@ -97,10 +104,6 @@ double  ScalarConverter::toDouble() {
 	if (str.length() > 1 && isChar(this->str))  {
 		const std::string err = "impossible";
 		throw err;
-	}
-	if (std::isalpha(this->str[0]) && this->str.length() == 1) {
-		this->_double = (double)this->str[0];
-		return this->_double;
 	}
 	this->_double = std::strtod(this->str.c_str(), NULL);
 	return this->_double;
