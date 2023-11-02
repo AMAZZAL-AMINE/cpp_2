@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:39:24 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/01 18:12:33 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/02 20:07:14 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ class ScalarConverter {
     float _float;
     double _double;
     char _char;
-    int isChar(std::string str);
     int getNbrSetprecision();
     ScalarConverter();
     char toChar();
@@ -32,7 +31,7 @@ class ScalarConverter {
     
   public :
     void    convert(std::string str);
-    void    display() const;
+    int     isError();
     ScalarConverter(std::string str); 
 };
 
