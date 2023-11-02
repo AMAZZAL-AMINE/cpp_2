@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:10:21 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/02 21:45:43 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/02 21:54:34 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int ScalarConverter::isError() {
 	int numberPoints = 0;
 	int numberF = 0;
 	int foundChar = 0;
+	int minisFound = 0;
 	
 	if (this->str == "nan" || this->str == "+inf" || this->str == "-inf")
 		return 0;
@@ -60,11 +61,16 @@ int ScalarConverter::isError() {
 			numberPoints++;
 		else if (this->str[count] == 'f')
 			numberF++;
+		else if (this->str[count] == '-') {
+			minisFound++;
+			if (minisFound > 1 || count != 0)
+				return 1;
+		}
 		else if (std::isalpha(this->str[count]))
 			foundChar++;
 		count++;
 	}
-	if (this->str.length() > 1 && (numberPoints > 1 || numberF > 1 || foundChar))
+	if (this->str.length() > 1 && (numberPoints > 1 || numberF > 1 || foundChar || minisFound > 1) )
 		return 1;
 	return 0;
 }
@@ -89,7 +95,6 @@ char ScalarConverter::toChar() {
 }
 
 
-
 int ScalarConverter::toInt() {
 	if (this->str == "nan" || this->str == "+inf" || this->str == "-inf")
 		throw (std::string)"impossible";
@@ -103,11 +108,16 @@ int ScalarConverter::toInt() {
 		this->_int = this->str[0];
 		return this->_int;
  	}
+	int minisFound = 1;
+	if (this->str[0] == '-') {
+		minisFound = -1;
+		count++;
+	}
 	while (this->str[count] != '\0' && std::isdigit(this->str[count])) {
     res = res * 10 + str[count] - '0';
     count++;
   }
-	this->_int = res;
+	this->_int = res * minisFound;
 	return this->_int;
 }
 
