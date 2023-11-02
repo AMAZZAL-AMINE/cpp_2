@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:10:21 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/02 20:33:52 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/02 21:45:43 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ int ScalarConverter::isError() {
 	int numberF = 0;
 	int foundChar = 0;
 	
+	if (this->str == "nan" || this->str == "+inf" || this->str == "-inf")
+		return 0;
 	while (this->str[count] != '\0') {
 		if (this->str[count] == '.')
 			numberPoints++;
@@ -69,6 +71,8 @@ int ScalarConverter::isError() {
 
 char ScalarConverter::toChar() {
 	int char_ ;
+	if (this->str == "nan" || this->str == "+inf" || this->str == "-inf")
+		throw (std::string)"impossible";
 	if (this->str.length() == 1 && isPrint(this->str))
 		char_  = this->str[0];
 	else
@@ -87,6 +91,8 @@ char ScalarConverter::toChar() {
 
 
 int ScalarConverter::toInt() {
+	if (this->str == "nan" || this->str == "+inf" || this->str == "-inf")
+		throw (std::string)"impossible";
 	if (this->str.length() > 1 &&  isError())  {
 		const std::string err = "impossible";
 		throw err;
@@ -131,19 +137,22 @@ double  ScalarConverter::toDouble() {
 	return this->_double;
 }
 
-int ScalarConverter::getNbrSetprecision() { //error here choolddd solve a brother
+int ScalarConverter::getNbrSetprecision() {
 	int count = this->str.find('.');
-	std::cout << " count " << count << std::endl;
 	if (count <=  0)
 		return 1;
 	int counter_ = 0;
-	while (this->str[count] != '\0' && this->str[count] != '0') {
-		counter_++;
+	int save = count;
+	count++;
+	while (this->str[count] != '\0') {
+		if (std::isdigit(this->str[count]) && this->str[count] != '0')
+			counter_ = count;
 		count++;
 	}
-	if (counter_ == 1)
+	counter_ = counter_ - save;
+	if (counter_ <= 1)
 		return 1;
-	return counter_ - 1;
+	return counter_;
 }
 
 
