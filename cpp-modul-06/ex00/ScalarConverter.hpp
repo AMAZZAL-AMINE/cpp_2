@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:39:24 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/02 20:07:14 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/03 10:25:04 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,10 @@ class ScalarConverter {
     double toDouble();
     
   public :
+    ~ScalarConverter();
+    ScalarConverter(ScalarConverter const &src);
+    ScalarConverter &operator=(ScalarConverter const &rhs);
+
     void    convert(std::string str);
     int     isError();
     ScalarConverter(std::string str); 

@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:10:21 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/02 21:54:34 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/03 10:26:08 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,24 @@
 ScalarConverter::ScalarConverter(std::string str) {
 	this->convert(str);
 }
+
+ScalarConverter::~ScalarConverter() {}
+
+ScalarConverter::ScalarConverter(ScalarConverter const &src) {
+	*this = src;
+}
+
+ScalarConverter & ScalarConverter::operator=(ScalarConverter const &rhs) {
+	if (this != &rhs) {
+		this->str = rhs.str;
+		this->_int = rhs._int;
+		this->_float = rhs._float;
+		this->_double = rhs._double;
+		this->_char = rhs._char;
+	}
+	return *this;
+}
+
 
 int isPrint(std::string str) {
 	if (str.length() == 1 && std::isprint(str[0]) && !std::isdigit(str[0]))

@@ -1,22 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 17:06:49 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 10:20:40 by mamazzal         ###   ########.fr       */
+/*   Created: 2023/10/30 17:07:18 by mamazzal          #+#    #+#             */
+/*   Updated: 2023/11/03 10:21:10 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-#define MAIN_H
+#include "main.h"
 
-#include <iostream>
-#include <iomanip> 
-#include "ScalarConverter.hpp"
-
-int StringToInt(std::string str);
-
-#endif
+int main(int  __unused arc, char **argv) {
+  
+  return 0;
+}

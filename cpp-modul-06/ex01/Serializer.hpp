@@ -1,22 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.h                                             :+:      :+:    :+:   */
+/*   Serializer.hpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 17:06:49 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 10:20:40 by mamazzal         ###   ########.fr       */
+/*   Created: 2023/11/03 10:41:23 by mamazzal          #+#    #+#             */
+/*   Updated: 2023/11/03 10:46:34 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef SERIALIZER_HPP
+# define SERIALIZER_HPP
 
-#include <iostream>
-#include <iomanip> 
-#include "ScalarConverter.hpp"
+#include "main.h"
 
-int StringToInt(std::string str);
+class Serializer {
+  private :
+  public :
+    Serializer();
+    Serializer(Serializer const &src);
+    ~Serializer();
+    Serializer &operator=(Serializer const &rhs);
+
+    uintptr_t serialize(Data* ptr);
+    Data* deserialize(uintptr_t raw);
+};
 
 #endif
