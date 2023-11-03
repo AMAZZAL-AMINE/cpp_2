@@ -6,16 +6,16 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:52:08 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 12:53:52 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:51:31 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef B
-#define B
+#ifndef B_HPP
+#define B_HPP
 
 #include "main.h"
 
-class B : Base {
+class B : public Base {
   private :
   public :
 };

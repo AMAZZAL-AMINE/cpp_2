@@ -6,18 +6,18 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 12:50:57 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 12:53:48 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/03 15:51:27 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef A
-#define A
+#ifndef A_HPP
+#define A_HPP
 
 #include "main.h"
 
-class A  : Base {
+class A  : public Base {
   private :
-  public :  
+  public :
 };
 
 #endif
