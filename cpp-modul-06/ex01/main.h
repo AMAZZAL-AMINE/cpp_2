@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:06:49 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 10:45:51 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/03 12:12:21 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include <iostream>
 
 typedef struct Data {
-  std::string s1;
-  int n;
+  int somthingAreInt;
+  std::string somthingAreStr;
 } Data;
 
 #include "Serializer.hpp"
