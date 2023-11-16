@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 15:39:24 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 10:25:04 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/16 17:32:27 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,25 @@
 
 class ScalarConverter {
   private :
-    std::string str;
-    int _int;
-    float _float;
-    double _double;
-    char _char;
-    int getNbrSetprecision();
+    static std::string str;
+    static int _int;
+    static float _float;
+    static double _double;
+    static char  _char;
+    static int getNbrSetprecision();
+    static char toChar();
+    static int toInt();
+    static float toFloat();
+    static double toDouble();
     ScalarConverter();
-    char toChar();
-    int toInt();
-    float toFloat();
-    double toDouble();
     
   public :
     ~ScalarConverter();
     ScalarConverter(ScalarConverter const &src);
     ScalarConverter &operator=(ScalarConverter const &rhs);
 
-    void    convert(std::string str);
-    int     isError();
+    static void    convert(std::string str);
+    static int     isError();
     ScalarConverter(std::string str); 
 };
 
