@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:10:21 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 10:26:08 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/16 16:48:03 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int ScalarConverter::toInt() {
 		const std::string err = "impossible";
 		throw err;
 	}
-	int res = 0;
+	long res = 0;
 	int count = 0;
 	if (this->str.length() == 1 && !std::isdigit(this->str[0])) {
 		this->_int = this->str[0];
@@ -133,6 +133,10 @@ int ScalarConverter::toInt() {
 	}
 	while (this->str[count] != '\0' && std::isdigit(this->str[count])) {
     res = res * 10 + str[count] - '0';
+		if (res > INT_MAX) {
+			std::string err = "imposisble";
+			throw err;
+		}
     count++;
   }
 	this->_int = res * minisFound;
@@ -145,7 +149,7 @@ float  ScalarConverter::toFloat() {
 		throw err;
 	}
 	if (this->str.length() == 1 && !std::isdigit(this->str[0])) {
-		this->_float = (float)this->str[0];
+		this->_float = static_cast<float>(this->str[0]);
 		return this->_float;
  }
 	this->_float = std::strtod(this->str.c_str(), NULL);
@@ -158,7 +162,7 @@ double  ScalarConverter::toDouble() {
 		throw err;
 	}
 	if (this->str.length() == 1 && !std::isdigit(this->str[0])) {
-		this->_double = (double)this->str[0];
+		this->_double =  static_cast<double>(this->str[0]);
 		return this->_double;
  }
 	this->_double = std::strtod(this->str.c_str(), NULL);
@@ -187,7 +191,7 @@ int ScalarConverter::getNbrSetprecision() {
 void ScalarConverter::convert(std::string str) {
 	this->str = str;
 	int nbrSetprecision = this->getNbrSetprecision();
-	
+
 	try {	
 		std::cout << "char: " << this->toChar()  << std::endl;
 	} catch(const std::string & e) {
