@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/30 17:07:18 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 12:33:39 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/17 12:42:55 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ int main(void) {
   data = serializer.deserialize(uintptr_);
   std::cout << data->somthingAreInt << std::endl;
   std::cout << data->somthingAreStr << std::endl;
+  delete data;
   return 0;
 }

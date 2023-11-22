@@ -6,13 +6,13 @@
 #    By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/28 11:35:17 by mamazzal          #+#    #+#              #
-#    Updated: 2023/11/22 21:34:02 by mamazzal         ###   ########.fr        #
+#    Updated: 2023/11/22 21:41:28 by mamazzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=magic
 
-SRC= main.cpp Array.tpp
+SRC= main.cpp 
 OBJ=$(SRC:.cpp=.o)
 
 FLAGS=-Wall -Wextra -Werror -std=c++98

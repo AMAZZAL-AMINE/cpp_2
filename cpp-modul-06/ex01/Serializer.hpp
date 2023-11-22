@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 10:41:23 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 11:56:04 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/17 15:47:13 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ class Serializer {
     ~Serializer();
     Serializer &operator=(Serializer const &rhs);
 
-    uintptr_t serialize(Data* ptr);
-    Data* deserialize(uintptr_t raw);
+    static uintptr_t serialize(Data* ptr);
+    static Data* deserialize(uintptr_t raw);
 };
 
 #endif

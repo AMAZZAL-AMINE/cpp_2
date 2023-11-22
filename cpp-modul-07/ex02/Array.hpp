@@ -9,14 +9,37 @@ class Array {
     T *array;
     unsigned int arrSize;
   public :
-    Array();
-    Array(Array const &src);
-    Array &operator=(Array const &src);
-    Array(unsigned int n);
-    ~Array();
-    unsigned int size() const;
+    Array() :array(NULL), arrSize(0) {}
+    Array(Array const &src) {
+      *this = src;
+    }
+    Array & operator=(Array const &src){
+      if (this != &src) {
+        delete [] this->array;
+        this->array = src.array;
+        this->arrSize = src.arrSize;
+      }
+      return *this;
+    }
+    ~Array() {
+      delete [] this->array;
+    }
+    Array(unsigned int n)  {
+      this->array = new T[n];
+      this->arrSize = n;
+    }
 
-    T & operator[](unsigned int i);
+    unsigned int size() const {
+      return this->arrSize;
+    }
+
+    T & operator[](unsigned int i) {
+      if (i >= this->arrSize) {
+        throw Array::OutOfLimitsException();
+      }
+      return this->array[i]; 
+    }
+
     class OutOfLimitsException : public std::exception {
       const char *what() const throw() {
         return "Out of limits";
