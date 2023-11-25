@@ -97,9 +97,36 @@ void BitcoineExchange::display() {
   }
 }
 
+double toInt(std::string str) {
+  std::string tmp = "";
+  size_t i = 0;
+  int count = 0;
+  while (i < str.length()) {
+    if (str[i] != '-') {
+      tmp[count] += str[i];
+      count++;
+    }
+    i++;
+  }
+  return (std::stod(tmp));
+}
+
+void BitcoineExchange::push_to_vector(std::vector<double> & vector, BitcoineExchange & bitcoin) {
+  std::vector<t_data_input>::iterator start = bitcoin.dataContainer.begin();
+  while (start != bitcoin.dataContainer.end()) {
+      t_data_input daa = *start;
+      vector.push_back(toInt(daa.date));
+      start++;
+  }
+}
+
 void BitcoineExchange::getPriceOfDay(BitcoineExchange & bitcoin) {
   std::vector<t_data_input>::iterator __unused coinIteStart = bitcoin.dataContainer.begin();
   std::vector<t_data_input>::iterator inputStart = this->dataContainer.begin();
+  std::vector<double> bitcoin_int;
+  std::vector<double> input_int;
+  this->push_to_vector(bitcoin_int, bitcoin);
+  this->push_to_vector(input_int, *this);
   t_data_input data;
   while (inputStart != this->dataContainer.end()) {
     data = *inputStart;
@@ -110,7 +137,6 @@ void BitcoineExchange::getPriceOfDay(BitcoineExchange & bitcoin) {
     else if (data.type == LARGE)
       std::cout << "Error: too large a number."  << std::endl;
     else {
-
     }
     inputStart++;
   }

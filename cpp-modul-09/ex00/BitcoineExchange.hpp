@@ -35,6 +35,7 @@ class BitcoineExchange {
       BitcoineExchange &operator=(BitcoineExchange const &src);
       ~BitcoineExchange();
       BitcoineExchange(std::string file);
+      void push_to_vector(std::vector<double> & vector, BitcoineExchange & bitcoin);
       void open(std::string file);
       void parse(int isdb);
       void push(t_data_input & data);
