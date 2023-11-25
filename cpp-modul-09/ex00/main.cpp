@@ -21,13 +21,9 @@ int main(int argc, char __unused **argv) {
     std::string file = argv[1];
     BitcoineExchange intputPars(file);
     intputPars.parse(0);
-    // intputPars.display();
-    std::cout << "____________________DATABASE__________________" << std::endl;
     BitcoineExchange dataParse("data.csv");
     dataParse.parse(1);
     intputPars.getPriceOfDay(dataParse);
-    // dataParse.display();
-    
   }catch(std::string & e) {
     std::cout << e << std::endl;
   }
