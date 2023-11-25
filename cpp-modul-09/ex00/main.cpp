@@ -6,35 +6,30 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:39:35 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/25 11:13:41 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/25 17:02:13 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
 
-int main()
-{
-  MutantStack<int> mstack;
-
-  mstack.push(5);
-  mstack.push(17);
-  std::cout << "top >> " << mstack.top() << std::endl;
-  mstack.pop();
-  std::cout << mstack.size() << std::endl;
-  mstack.push(3);
-  mstack.push(5);
-  mstack.push(737);
-  //[...]
-  mstack.push(0);
-  MutantStack<int>::iterator it = mstack.begin();
-  MutantStack<int>::iterator ite = mstack.end();
-  ++it;
-  --it;
-  while (it != ite)
-  {
-    std::cout << *it << std::endl;
-    ++it;
+int main(int argc, char __unused **argv) {
+  if (argc != 2) {
+    std::cerr << "Error: could not open file." << std::endl;
+    return 1;
   }
-  std::stack<int> s(mstack);
+  try {
+    std::string file = argv[1];
+    BitcoineExchange intputPars(file);
+    intputPars.parse(0);
+    // intputPars.display();
+    std::cout << "____________________DATABASE__________________" << std::endl;
+    BitcoineExchange dataParse("data.csv");
+    dataParse.parse(1);
+    intputPars.getPriceOfDay(dataParse);
+    // dataParse.display();
+    
+  }catch(std::string & e) {
+    std::cout << e << std::endl;
+  }
   return 0;
 }

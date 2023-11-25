@@ -4,13 +4,21 @@
 #include "main.h"
 
 template<typename T>
-class Mutantstack : std::stack<T> {
+class MutantStack : public std::stack<T> {
     private :
     public :
-      Mutantstack() {}
-      Mutantstack(Mutantstack const &src) {}
-      Mutantstack &operator=(Mutantstack const &src) {}
-      ~Mutantstack() {}
-  };
+      typedef typename std::stack<T>::container_type::iterator iterator;
+      MutantStack() {}
+      MutantStack(MutantStack __unused const  &src) {}
+      MutantStack &operator=(MutantStack __unused const  &src) {}
+      ~MutantStack() {} 
+
+      iterator begin() { 
+        return std::stack<T>::c.begin();
+      }
+      iterator end() {
+        return std::stack<T>::c.end();
+      }
+};
 
 #endif
