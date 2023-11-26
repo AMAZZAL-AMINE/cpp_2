@@ -18,6 +18,7 @@ void BitcoineExchange::open(std::string fileName) {
 std::string BitcoineExchange::parseDate(std::string & line, int counter, int isdb) {
   std::string date = "";
   size_t i = 0;
+
   if (counter == 0 && (!isdb && line != "date | value"))
     throw std::string("Exeption Error : input file must start with : date | value");
   while (i < line.length() && counter > 0) {
@@ -33,23 +34,21 @@ std::string BitcoineExchange::parseDate(std::string & line, int counter, int isd
 }
 
 
-bool BitcoineExchange::isCorrectLine(std::string & str, int isdb) {
-  size_t i = 0;
+bool BitcoineExchange::isCorrectLine(std::string & str, int __unused isdb) {
+  size_t i = -1;
   int numberPipe  = 0;
-  int numberMoins = 0;
-  int foundError = 0;
-  while (i < str.length()) {
-    if (!isdb && str[i] == '|')
+  int __unused numberMoins = 0;
+  int __unused foundError = 0;
+
+  while (++i < str.length())
+    if (str[i] == '|')
       numberPipe++;
-    else if (!isdb && str[i] == '-')
-      numberMoins++;
-    else if (!isdb && !std::isdigit(str[i]))
+  i = -1;
+  while (++i < str.length()) {
+    if ((str[i] == '-' || str[i] == '.') && ((i + 1 < str.length() && !std::isdigit(str[i+1]))  || i + 1 == str.length() ))
       foundError++;
-    i++;
   }
-  if (numberMoins > 2 || numberPipe > 1 || foundError > 0)
-    return 1;
-  return 0;
+  return (numberPipe != 1 || foundError != 0) ? 1 :  0;
 }
 
 long BitcoineExchange::dateToDecimal(std::string  & str) {
@@ -60,12 +59,14 @@ long BitcoineExchange::dateToDecimal(std::string  & str) {
       tmp += str[i];
     i++;
   }
-  return (std::stod(tmp));
+  return (std::strtod(tmp.c_str(), NULL));
 }
 
 std::string BitcoineExchange::parseValue(std::string & line, int counter, int isdb) {
   std::string date = "";
   size_t i;
+  if (!isdb && this->isCorrectLine(line, isdb))
+    return "";
   if (isdb)
     i = line.find(",");
   else 
@@ -94,20 +95,27 @@ void BitcoineExchange::parse(int isdb) {
       throw std::string("Exeption Error : input file must start with : date | value");
     if (counter > 0) {
       data.date = this->parseDate(line, counter, isdb);
-      data.dateInDecimal = dateToDecimal(data.date);
       value = this->parseValue(line, counter, isdb);
       data.type = DEFAULT;
       if (value == "") {
           data.type = BADE_INPUT_;
           data.value = 0;
       }else {
-        double value_ = std::stod(value);
-        if (value_ > 1000 && !isdb)
-          data.type = LARGE;
-        else if (value_ < 0)
-          data.type = NEGATIVE_;
-        else
-          data.value = value_;
+        try
+        {
+          data.dateInDecimal = dateToDecimal(data.date);
+          double value_ = std::stod(value);
+          if (value_ > 1000 && !isdb)
+            data.type = LARGE;
+          else if (value_ < 0)
+            data.type = NEGATIVE_;
+          else
+            data.value = value_;
+        }
+        catch(const std::invalid_argument & e) {
+            data.type = BADE_INPUT_;
+        }
+        
       }
       this->push(data);
     }
