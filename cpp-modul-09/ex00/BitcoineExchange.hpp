@@ -16,6 +16,7 @@
 #define DEFAULT         1
 #endif
 
+
 typedef struct t_data_input {
   std::string   date;
   long          dateInDecimal;
@@ -26,7 +27,7 @@ typedef struct t_data_input {
 class BitcoineExchange {
     private :
       std::string fileName;
-      std::vector<t_data_input> dataContainer;
+      std::multiset<t_data_input> dataContainer;
       std::ifstream fileObj;
       std::string parseDate(std::string & line, int counter, int isdb);
       std::string parseValue(std::string & line, int counter, int isdb);
@@ -38,7 +39,7 @@ class BitcoineExchange {
       BitcoineExchange &operator=(BitcoineExchange const &src);
       ~BitcoineExchange();
       BitcoineExchange(std::string file);
-      void push_to_vector(std::vector<double> & vector, BitcoineExchange & bitcoin);
+      void push_to_vector(std::multiset<double> & set, BitcoineExchange & bitcoin);
       void open(std::string file);
       void parse(int isdb);
       void push(t_data_input & data);

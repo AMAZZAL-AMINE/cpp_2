@@ -44,9 +44,32 @@ bool BitcoineExchange::isCorrectLine(std::string & str, int __unused isdb) {
     if (str[i] == '|')
       numberPipe++;
   i = -1;
+  int numberMoin = 0;
   while (++i < str.length()) {
-    if ((str[i] == '-' || str[i] == '.') && ((i + 1 < str.length() && !std::isdigit(str[i+1]))  || i + 1 == str.length() ))
+    if (str[i] == '-' && (!str[i + 1] || (!std::isdigit(str[i + 1]) || (i - 1 >=0 && !std::isdigit(str[i-1])))))
       foundError++;
+    else if (str[i] == '.' && ((i + 1 < str.length() && !std::isdigit(str[i+1]))  || i + 1 == str.length() ))
+      foundError++;
+    else if (!std::isdigit(str[i]) && (str[i] != ' ' && str[i] != '|' && str[i] != '-' && str[i] != '.')) 
+      foundError++;
+    if (str[i] == '-')
+      numberMoin++;
+    if (str[i] == '|' && numberMoin != 2) {
+      foundError++;
+      break;
+    }
+  }
+  if (foundError == 0) {
+    i = str.length();
+    bool foundPipe = false;
+    while (--i) {
+      if (str[i] == '|')
+        foundPipe = true;
+      else if (str[i] == '-' && foundPipe == false) {
+        foundError++; 
+        break;
+      }
+    }
   }
   return (numberPipe != 1 || foundError != 0) ? 1 :  0;
 }
@@ -93,13 +116,13 @@ void BitcoineExchange::parse(int isdb) {
       throw std::string("Exeption Error : input file must start with : date | value");
     else if (counter == 0 && (isdb && line != "date,exchange_rate"))
       throw std::string("Exeption Error : input file must start with : date | value");
-    if (counter > 0) {
+    if (counter > 0 && !line.empty()) {
       data.date = this->parseDate(line, counter, isdb);
       value = this->parseValue(line, counter, isdb);
       data.type = DEFAULT;
       if (value == "") {
-          data.type = BADE_INPUT_;
-          data.value = 0;
+        data.type = BADE_INPUT_;
+        data.value = 0;
       }else {
         try
         {
@@ -115,25 +138,24 @@ void BitcoineExchange::parse(int isdb) {
         catch(const std::invalid_argument & e) {
             data.type = BADE_INPUT_;
         }
-        
       }
       this->push(data);
     }
     counter++;
   }
+
 }
 
 void BitcoineExchange::push(t_data_input &  data) {
-  this->dataContainer.push_back(data);
+  this->dataContainer.insert(data);
 }
 
 void BitcoineExchange::display() {
-  std::vector<t_data_input>::iterator start = this->dataContainer.begin();
+  std::multiset<t_data_input>::iterator start = this->dataContainer.begin();
   while (start != this->dataContainer.end()) {
-    t_data_input data = *start;
-    std::cout << "Date  : " << data.date << std::endl;
-    std::cout << "Value : " << data.value << std::endl;
-    std::cout << "TYPE : " << data.type << std::endl;
+    std::cout << "Date  : " << start->date << std::endl;
+    std::cout << "Value : " << start->value << std::endl;
+    std::cout << "TYPE : " << start->type << std::endl;
     std::cout << "_____" << std::endl;
     start++;
   }
@@ -143,10 +165,14 @@ int loweBownRetrunCompar(const t_data_input& a, const t_data_input& b) {
   return a.dateInDecimal < b.dateInDecimal;
 }
 
-void BitcoineExchange::getPriceOfDay(BitcoineExchange & bitcoin) {
-  std::vector<t_data_input>::iterator __unused coinIteStart = bitcoin.dataContainer.begin();
-  std::vector<t_data_input>::iterator __unused inputStart = this->dataContainer.begin();
-        std::sort(bitcoin.dataContainer.begin(), bitcoin.dataContainer.end(), loweBownRetrunCompar);
+bool operator<(const t_data_input& lhs, const t_data_input& rhs) {
+  return lhs.dateInDecimal < rhs.dateInDecimal;
+}
+
+void BitcoineExchange::getPriceOfDay(BitcoineExchange  & bitcoin) {
+  (void)bitcoin;
+  std::multiset<t_data_input>::iterator __unused inputStart = this->dataContainer.begin();
+  //std::sort(bitcoin.dataContainer.begin(), bitcoin.dataContainer.end(), loweBownRetrunCompar);
   t_data_input data;
   while (inputStart != this->dataContainer.end()) {
     data = *inputStart;
@@ -157,7 +183,7 @@ void BitcoineExchange::getPriceOfDay(BitcoineExchange & bitcoin) {
     else if (data.type == LARGE)
       std::cout << "Error: too large a number."  << std::endl;
     else {
-        std::vector<t_data_input>::iterator lowerBound = std::lower_bound(
+        std::multiset<t_data_input>::iterator lowerBound = std::lower_bound(
         bitcoin.dataContainer.begin(), bitcoin.dataContainer.end(), data, loweBownRetrunCompar);
 
         if (lowerBound != bitcoin.dataContainer.end()) {

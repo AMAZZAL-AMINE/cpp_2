@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:39:35 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/26 10:22:21 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/27 12:57:27 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int main(int argc, char __unused **argv) {
     std::string file = argv[1];
     BitcoineExchange intputPars(file);
     intputPars.parse(0);
-    // intputPars.display();
     BitcoineExchange dataParse("data.csv");
     dataParse.parse(1);
+    // dataParse.display();
     intputPars.getPriceOfDay(dataParse);
   }catch(std::string & e) {
     std::cout << e << std::endl;
