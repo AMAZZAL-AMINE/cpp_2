@@ -178,7 +178,6 @@ bool operator<(const t_data_input& lhs, const t_data_input& rhs) {
 void BitcoineExchange::getPriceOfDay(BitcoineExchange  & bitcoin) {
   (void)bitcoin;
   std::multiset<t_data_input>::iterator __unused inputStart = this->dataContainer.begin();
-  //std::sort(bitcoin.dataContainer.begin(), bitcoin.dataContainer.end(), loweBownRetrunCompar);
   t_data_input data;
   while (inputStart != this->dataContainer.end()) {
     data = *inputStart;
@@ -194,6 +193,9 @@ void BitcoineExchange::getPriceOfDay(BitcoineExchange  & bitcoin) {
 
         if (lowerBound != bitcoin.dataContainer.end()) {
           t_data_input result = *lowerBound;
+          std::cout << data.date << " => " << data.value << " = " << data.value * result.value << std::endl;
+        }else {
+          t_data_input result = *bitcoin.dataContainer.rbegin();
           std::cout << data.date << " => " << data.value << " = " << data.value * result.value << std::endl;
         }
     }
