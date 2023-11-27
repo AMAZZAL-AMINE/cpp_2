@@ -33,50 +33,120 @@ std::string BitcoineExchange::parseDate(std::string & line, int counter, int isd
   return date;
 }
 
-
-bool BitcoineExchange::isCorrectLine(std::string & str, int __unused isdb) {
-  size_t i = -1;
+bool BitcoineExchange::checkPipe(std::string & str) {
+  int pipePosition = -1;
   int numberPipe  = 0;
-  int __unused numberMoins = 0;
-  int __unused foundError = 0;
+  size_t i = -1;
 
-  while (++i < str.length())
-    if (str[i] == '|')
-      numberPipe++;
-  i = -1;
-  int numberMoin = 0;
-  int pipes = 0;
   while (++i < str.length()) {
-    if (str[i] == '|')
-      pipes = 1;
-    if (str[i] == '-' && (!str[i + 1] || (!std::isdigit(str[i + 1]) || (i - 1 >=0 && !std::isdigit(str[i-1])))))
-      foundError++;
-    else if (str[i] == '.' && ((i + 1 < str.length() && !std::isdigit(str[i+1]))  || i + 1 == str.length() ))
-      foundError++;
-    else if (!std::isdigit(str[i]) && (str[i] != ' ' && str[i] != '|' && str[i] != '-' && str[i] != '.')) 
-      foundError++;
-    if (str[i] == ' ' && (i == 0 || (str[i + 1] && str[i + 1] == ' ')))
-        foundError++;
-    else if (str[i] == '-')
-      numberMoin++;
-    else if (str[i] == '|' && numberMoin != 2)
-      foundError++;
-    else if (str[i] == ' ' && (numberMoin != 2 || (str[i + 1] && str[i + 1] != '|' && !pipes) || (pipes && i - 1 >= 0 && str[i - 1] != '|')))
-      foundError++;
-  }
-  if (foundError == 0) {
-    i = str.length();
-    bool foundPipe = false;
-    while (--i) {
-      if (str[i] == '|')
-        foundPipe = true;
-      else if (str[i] == '-' && foundPipe == false) {
-        foundError++; 
-        break;
-      }
+    if (str[i] == '|' ) {
+      pipePosition = i;
+      numberPipe++;
     }
   }
-  return (numberPipe != 1 || foundError != 0) ? 1 :  0;
+  if (numberPipe != 1 || pipePosition != 11)
+    return 1;
+  return 0;
+}
+
+bool BitcoineExchange::checkDate(std::string & str) {
+  int moinsPosition = 0;
+
+  size_t i = -1;
+
+  while (++i < str.length() && str[i] != '|') {
+    if (str[i] == '-')
+      moinsPosition++;
+    if (str[i] == '-' && moinsPosition == 1 && i != 4)
+      return 1;
+    if (str[i] == '-' && moinsPosition == 2 && i != 7)
+      return 1;
+  }
+  if (moinsPosition != 2)
+    return true;
+  //check the - in the value (if it is a nigative number)
+  i = str.length();
+  while (--i && str[i] != '|')
+    if ((str[i] == '-' || str[i] == '+') && ((i-1 > 0 && str[i-1] != ' ') || (str[i + 1] && !std::isdigit(str[i+1]))))
+      return true;
+  i = -1;
+  moinsPosition = 0;
+  //check spaces same as -
+  while (++i < str.length()) {
+    if (str[i] == ' ')
+      moinsPosition++;
+    if (str[i] == ' ' && moinsPosition == 1 && i != 10)
+      return 1;
+    else if (str[i] == ' ' && moinsPosition == 2 && i != 12)
+      return 1;
+  }
+  if (moinsPosition != 2)
+    return true;
+  return false;
+}
+
+bool BitcoineExchange::checkCharcters(std::string & str) {
+  size_t count = -1;
+  while (++count < str.length()) {
+    if (str[count] != '+' && str[count] != '-' && !std::isdigit(str[count]) && str[count] != ' ' && str[count] != '|')
+      return true;
+    if (str[count] == '+' && count != 13)
+      return true;
+  }
+  return false;
+}
+
+
+int toInt(std::string str) {
+  int count = 0;
+  int res = 0;
+  while (str[count] != '\0') {
+    if (std::isalpha(str[count])) {
+      std::cout << "Invalid input" << std::endl;
+      return -1;
+    }
+    res = res * 10 + str[count] - '0';
+    count++;
+  }
+  return res;
+}
+
+bool BitcoineExchange::checkDateRange(std::string & date) {
+  size_t count = 0;
+  std::string year, month, day;
+
+  while (count < date.length() && date[count] != '-')
+    year += date[count++];
+  count++;
+  while (count < date.length() && date[count] != '-')
+    month += date[count++];
+  count++;
+  while (count < date.length() && date[count] != ' ')
+    day += date[count++];
+  int _year, _month, _day;
+  _year = toInt(year) ;
+  _month = toInt(month);
+  _day = toInt(day);
+
+  if (year.length() != 4 || _year > 2023 || _year < 2000)
+    return 1;
+  if (month.length() != 2 || _month > 31 || _month < 1)
+    return 1;
+  if (day.length() != 2 || _day > 12 || _day < 1)
+    return 1;
+  return false;
+}
+
+bool BitcoineExchange::isCorrectLine(std::string & str, int __unused isdb) {
+  if (!isdb && checkPipe(str))
+    return 1;
+  else if (!isdb && this->checkDate(str))
+    return 1;
+  else if (!isdb && this->checkCharcters(str))
+    return 1;
+  else if (!isdb && this->checkDateRange(str))
+    return 1;
+  return 0;
 }
 
 long BitcoineExchange::dateToDecimal(std::string  & str) {
@@ -149,7 +219,8 @@ void BitcoineExchange::parse(int isdb) {
     }
     counter++;
   }
-
+ if ((!isdb && counter == 1) || this->dataContainer.size() == 0)
+  throw std::string("Ops, Can't search using undfined date or value");
 }
 
 void BitcoineExchange::push(t_data_input &  data) {

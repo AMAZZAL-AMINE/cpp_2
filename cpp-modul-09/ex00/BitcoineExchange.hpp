@@ -34,6 +34,10 @@ class BitcoineExchange {
       std::string parseValue(std::string & line, int counter, int isdb);
       long dateToDecimal(std::string  & str);
       bool isCorrectLine(std::string & str, int isdb);
+      bool checkPipe(std::string & str);
+      bool checkDate(std::string & str);
+      bool checkCharcters(std::string & str);
+      bool checkDateRange(std::string & date);
     public :
       BitcoineExchange();
       BitcoineExchange(BitcoineExchange const &src);
