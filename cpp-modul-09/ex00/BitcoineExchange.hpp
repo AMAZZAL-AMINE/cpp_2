@@ -22,6 +22,7 @@ typedef struct t_data_input {
   long          dateInDecimal;
   float         value;
   int           type;
+  std::string   fullDate;
 } t_data_input;
 
 class BitcoineExchange {

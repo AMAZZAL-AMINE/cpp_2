@@ -45,19 +45,24 @@ bool BitcoineExchange::isCorrectLine(std::string & str, int __unused isdb) {
       numberPipe++;
   i = -1;
   int numberMoin = 0;
+  int pipes = 0;
   while (++i < str.length()) {
+    if (str[i] == '|')
+      pipes = 1;
     if (str[i] == '-' && (!str[i + 1] || (!std::isdigit(str[i + 1]) || (i - 1 >=0 && !std::isdigit(str[i-1])))))
       foundError++;
     else if (str[i] == '.' && ((i + 1 < str.length() && !std::isdigit(str[i+1]))  || i + 1 == str.length() ))
       foundError++;
     else if (!std::isdigit(str[i]) && (str[i] != ' ' && str[i] != '|' && str[i] != '-' && str[i] != '.')) 
       foundError++;
-    if (str[i] == '-')
+    if (str[i] == ' ' && (i == 0 || (str[i + 1] && str[i + 1] == ' ')))
+        foundError++;
+    else if (str[i] == '-')
       numberMoin++;
-    if (str[i] == '|' && numberMoin != 2) {
+    else if (str[i] == '|' && numberMoin != 2)
       foundError++;
-      break;
-    }
+    else if (str[i] == ' ' && (numberMoin != 2 || (str[i + 1] && str[i + 1] != '|' && !pipes) || (pipes && i - 1 >= 0 && str[i - 1] != '|')))
+      foundError++;
   }
   if (foundError == 0) {
     i = str.length();
@@ -117,6 +122,7 @@ void BitcoineExchange::parse(int isdb) {
     else if (counter == 0 && (isdb && line != "date,exchange_rate"))
       throw std::string("Exeption Error : input file must start with : date | value");
     if (counter > 0 && !line.empty()) {
+      data.fullDate = line;
       data.date = this->parseDate(line, counter, isdb);
       value = this->parseValue(line, counter, isdb);
       data.type = DEFAULT;
@@ -179,7 +185,7 @@ void BitcoineExchange::getPriceOfDay(BitcoineExchange  & bitcoin) {
     if (data.type == NEGATIVE_)
       std::cout << "Error: not a positive number." << std::endl;
     else if (data.type == BADE_INPUT_)
-      std::cout << "Error: bad input => " << data.date << std::endl;
+      std::cout << "Error: bad input => " << data.fullDate << std::endl;
     else if (data.type == LARGE)
       std::cout << "Error: too large a number."  << std::endl;
     else {
