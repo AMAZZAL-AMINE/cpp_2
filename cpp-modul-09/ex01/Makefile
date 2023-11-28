@@ -6,13 +6,13 @@
 #    By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/10/28 11:35:17 by mamazzal          #+#    #+#              #
-#    Updated: 2023/11/28 10:33:42 by mamazzal         ###   ########.fr        #
+#    Updated: 2023/11/28 11:30:12 by mamazzal         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME=RPN
 
-SRC= main.cpp 
+SRC= main.cpp RPN.cpp
 OBJ=$(SRC:.cpp=.o)
 
 FLAGS=-Wall -Wextra -Werror -std=c++98

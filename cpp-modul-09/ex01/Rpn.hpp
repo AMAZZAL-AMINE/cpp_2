@@ -3,13 +3,22 @@
 
 #include "main.h"
 
-class Rpn {
+class RPN {
     private :
+      std::string  ArgmentsStr;
+      int searchAmoungData(std::string, int);
+      int checkArgmnets();
+      std::stack<int> stackList;
+      void pushNumbers();
+      void pushTopTo(std::stack<int> &  newStack, int flag);
+      void getCalculAndInsert(std::stack<int> &  newStack, int flag);
     public :
-      Rpn();
-      Rpn(Rpn const &src);
-      Rpn &operator=(Rpn const &src);
-      ~Rpn();
+      RPN();
+      RPN(RPN const &src);
+      RPN &operator=(RPN const &src);
+      ~RPN();
+      void setArgments(std::string argments);
+      void display() const;
   };
 
 #endif

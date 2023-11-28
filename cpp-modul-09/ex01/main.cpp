@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:39:35 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/28 10:43:39 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/11/28 11:38:24 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ int main(int argc, char __unused **argv) {
     return 1;
   }
   try {
-    
-    std::string file = argv[1];
+    RPN rpnObj;
+    rpnObj.setArgments(argv[1]);
+    rpnObj.display();
   }catch(std::string & e) {
     std::cout << e << std::endl;
   }
   return 0;
 }
+
