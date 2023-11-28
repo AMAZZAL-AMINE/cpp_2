@@ -1,8 +1,16 @@
 #include "BitcoineExchange.hpp"
 
 BitcoineExchange::BitcoineExchange() {}
-BitcoineExchange::BitcoineExchange(BitcoineExchange const __unused &src){}
-BitcoineExchange & BitcoineExchange::operator=(BitcoineExchange const __unused &src){return *this;}
+BitcoineExchange::BitcoineExchange(BitcoineExchange const __unused &src){
+  *this = src;
+}
+BitcoineExchange & BitcoineExchange::operator=(BitcoineExchange const __unused &src){
+  if (this != &src) {
+    this->fileName = src.fileName;
+    this->dataContainer = src.dataContainer;
+  }
+  return *this;
+}
 BitcoineExchange::~BitcoineExchange() {}
 
 BitcoineExchange::BitcoineExchange(std::string fileName) {
