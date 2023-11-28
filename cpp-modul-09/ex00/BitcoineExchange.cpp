@@ -128,7 +128,7 @@ bool BitcoineExchange::checkDateRange(std::string & date) {
   _month = toInt(month);
   _day = toInt(day);
 
-  if (year.length() != 4 || _year > 2023 || _year < 2000)
+  if (year.length() != 4 || _year > 2023 || _year < 2009)
     return 1;
   if (month.length() != 2 || _month > 31 || _month < 1)
     return 1;
@@ -261,7 +261,6 @@ void BitcoineExchange::getPriceOfDay(BitcoineExchange  & bitcoin) {
     else {
         std::multiset<t_data_input>::iterator lowerBound = std::lower_bound(
         bitcoin.dataContainer.begin(), bitcoin.dataContainer.end(), data, loweBownRetrunCompar);
-
         if (lowerBound != bitcoin.dataContainer.end()) {
           t_data_input result = *lowerBound;
           std::cout << data.date << " => " << data.value << " = " << data.value * result.value << std::endl;
