@@ -10,15 +10,14 @@ class RPN {
       int checkArgmnets();
       std::stack<int> stackList;
       void pushNumbers();
-      void pushTopTo(std::stack<int> &  newStack, int flag);
-      void getCalculAndInsert(std::stack<int> &  newStack, int flag);
+      int getCalculAndInsert(int nbr1, int nbr2, int flag) ;
     public :
       RPN();
       RPN(RPN const &src);
       RPN &operator=(RPN const &src);
       ~RPN();
       void setArgments(std::string argments);
-      void display() const;
+      void getResult() const;
   };
 
 #endif

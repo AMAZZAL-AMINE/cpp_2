@@ -1,8 +1,16 @@
 #include "RPN.hpp"
 
 RPN::RPN() {}
-RPN::RPN(RPN const __unused &src){}
-RPN & RPN::operator=(RPN const __unused &src){return *this;}
+RPN::RPN(RPN const __unused &src){
+  *this = src;
+}
+RPN & RPN::operator=(RPN const __unused &src){
+  if (this != &src) {
+    this->ArgmentsStr = src.ArgmentsStr;
+    this->stackList = src.stackList;
+  }
+  return *this;
+}
 RPN::~RPN() {}
 
 
@@ -23,91 +31,37 @@ int RPN::checkArgmnets() {
   return 0;
 }
 
-void RPN::pushTopTo(std::stack<int> &  newStack, int flag) {
-  int top = this->stackList.top();
-  this->stackList.pop();
-  int top2 = this->stackList.top();
-  this->stackList.pop();
-  switch (flag)
-  {
-  case '-' :
-    newStack.push(top - top2);
-    break;
-  case '+' :
-    newStack.push(top + top2);
-    break;
-  case '/' :
-    newStack.push(top / top2);
-    break;
-  case '*' :
-    newStack.push(top * top2);
-    break;
-  default:
-    break;
-  }
-}
-
-void RPN::getCalculAndInsert(std::stack<int> &  newStack, int flag) {
-  int top = this->stackList.top();
-  this->stackList.pop();
-  int top2 = newStack.top();
-  newStack.pop();
-
+int RPN::getCalculAndInsert(int nbr1, int nbr2, int flag) {
   switch (flag)
   {
     case '-' :
-      newStack.push(top2 - top);
-      break;
+      return nbr1 - nbr2;
     case '+' :
-      newStack.push(top2 + top);
-      break;
+      return nbr1 + nbr2;
     case '/' :
-      newStack.push(top2 / top);
-      break;
+      return nbr1 / nbr2;
     case '*' :
-      newStack.push(top2 * top);
-      break;
+      return nbr1 * nbr2;
     default:
-      break;
+      return 0;
   }
 }
 
 void RPN::pushNumbers() {
   size_t count = -1;
-  std::stack<int> tmpStack;
-  while (++count <  this->ArgmentsStr.length()) {
-    if (std::isdigit(this->ArgmentsStr[count]))
-      tmpStack.push(this->ArgmentsStr[count] - 48);
-  }
 
-  while (!tmpStack.empty()) {
-    this->stackList.push(tmpStack.top());
-    tmpStack.pop();
-  }
-
-  std::stack<int> newStack;
   count = -1;
   while (++count <  this->ArgmentsStr.length()) {
-    if (this->ArgmentsStr[count] == '-' || this->ArgmentsStr[count] == '+' || this->ArgmentsStr[count] == '/' || this->ArgmentsStr[count] == '*') {
-      this->pushTopTo(newStack, this->ArgmentsStr[count]);
-      break;
+    if (std::isdigit(this->ArgmentsStr[count]))
+      this->stackList.push(this->ArgmentsStr[count] - 48);
+    else if (this->ArgmentsStr[count] == '-' || this->ArgmentsStr[count] == '+' || this->ArgmentsStr[count] == '/' || this->ArgmentsStr[count] == '*') {
+        int nbr2 = this->stackList.top();
+        this->stackList.pop();
+        int nbr1 = this->stackList.top();
+        this->stackList.pop();
+        this->stackList.push(getCalculAndInsert(nbr1, nbr2, this->ArgmentsStr[count]));
     }
-    if (newStack.size() == 1)
-      break;
   }
-  while (++count <  this->ArgmentsStr.length()){
-    if (this->ArgmentsStr[count] == '-')
-      this->getCalculAndInsert(newStack, '-');
-    else if (this->ArgmentsStr[count] == '+')
-      this->getCalculAndInsert(newStack, '+');
-    else if (this->ArgmentsStr[count] == '/')
-      this->getCalculAndInsert(newStack, '/');
-    else if (this->ArgmentsStr[count] == '*')
-      this->getCalculAndInsert(newStack, '*');
-    else if (this->stackList.size() == 0)
-      break;
-  }
-  std::cout << "POLISH NOTATION RESULT : " << newStack.top() << std::endl;
 }
 
 void RPN::setArgments(std::string argments) {
@@ -117,7 +71,6 @@ void RPN::setArgments(std::string argments) {
   this->pushNumbers();
 }
 
-void RPN::display() const {
-  // this->pushNumbers();
+void RPN::getResult() const {
+  std::cout << "RESULT : " << this->stackList.top() << std::endl;
 }
- 
