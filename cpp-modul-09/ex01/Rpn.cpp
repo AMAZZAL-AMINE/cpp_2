@@ -25,9 +25,16 @@ int RPN::searchAmoungData(std::string arg, int c) {
 int RPN::checkArgmnets() {
   size_t count = -1;
 
-  while (++count < this->ArgmentsStr.length())
+  if (this->ArgmentsStr.empty())
+    throw std::string("Error : empty Argments");
+  if (this->ArgmentsStr.length() <= 2)
+    throw std::string("Error : Not enough Argments");
+  while (++count < this->ArgmentsStr.length()) {
     if (!this->searchAmoungData("0123456789 +/*-", this->ArgmentsStr[count]))
-      return 1;
+      throw std::string("Error : INVALID ARGMENTS");
+    if (std::isdigit(this->ArgmentsStr[count]) && this->ArgmentsStr[count + 1] && std::isdigit(this->ArgmentsStr[count + 1]))
+      throw std::string("Error : Numbers can be only from 0 to 9");
+  }
   return 0;
 }
 
@@ -55,6 +62,8 @@ void RPN::pushNumbers() {
     if (std::isdigit(this->ArgmentsStr[count]))
       this->stackList.push(this->ArgmentsStr[count] - 48);
     else if (this->ArgmentsStr[count] == '-' || this->ArgmentsStr[count] == '+' || this->ArgmentsStr[count] == '/' || this->ArgmentsStr[count] == '*') {
+        if (this->stackList.size() < 2)
+          throw std::string("Error : Not enough numbers");
         int nbr2 = this->stackList.top();
         this->stackList.pop();
         int nbr1 = this->stackList.top();
@@ -66,8 +75,7 @@ void RPN::pushNumbers() {
 
 void RPN::setArgments(std::string argments) {
   this->ArgmentsStr = argments;
-  if (this->checkArgmnets())
-    throw std::string("Error : INVALID ARGMENTS");
+  this->checkArgmnets();
   this->pushNumbers();
 }
 
