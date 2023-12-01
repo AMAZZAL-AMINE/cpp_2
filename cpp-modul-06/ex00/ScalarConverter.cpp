@@ -6,17 +6,11 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:10:21 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/12/01 12:06:49 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/01 15:43:03 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "main.h"
-
-// std::string ScalarConverter::str;
-// int ScalarConverter::_int;
-// char ScalarConverter::_char;
-// float ScalarConverter::_float;
-// double ScalarConverter::_double;
 
 ScalarConverter::ScalarConverter() {}
 

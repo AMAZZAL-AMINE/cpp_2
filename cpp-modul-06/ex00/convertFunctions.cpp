@@ -10,16 +10,6 @@ int isPrint(std::string str) {
 }
 
 
-int ascii(std::string str) {
-  int count = 0;
-  int rsult = 0;
-  while (str[count] != '\0' && std::isdigit(str[count])) {
-    rsult = rsult * 10 + str[count]  - '0';
-    count++;
-  }
-  return rsult;
-}
-
 int StringToInt(std::string str) {
   int count = 0;
   int res = 0;
@@ -45,7 +35,7 @@ int isError(std::string & str) {
 			numberPoints++;
 		else if (str[count] == 'f')
 			numberF++;
-		else if (str[count] == '-') {
+		else if (str[count] == '-' || str[count] == '+') {
 			minisFound++;
 			if (minisFound > 1 || count != 0)
 				return 1;
@@ -69,12 +59,11 @@ char toChar(std::string & str) {
 		char_  = str[0];
 	else
 		 char_ = StringToInt(str);
-	bool isAscii = isPrint(str);
-	if (isAscii) {
+	if (isPrint(str)) {
 		std::cout << "char: " << char_  << std::endl;
 		return char_;
 	}
-	else if ((ascii(str) < 32 || ascii(str) > 127) && !isError(str))
+	else if ((StringToInt(str) < 32 || StringToInt(str) > 127) && !isError(str))
 		std::cout << "char: Non displayable" << std::endl;
 	else
 		std::cout << "char: impossible" << std::endl;
@@ -163,3 +152,4 @@ int getNbrSetprecision(std::string & str) {
 		return 1;
 	return counter_;
 }
+ 
