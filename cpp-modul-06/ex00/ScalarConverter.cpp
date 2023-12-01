@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/31 16:10:21 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/20 15:59:54 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/01 11:07:27 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,10 @@ int ScalarConverter::isError() {
 
 char ScalarConverter::toChar() {
 	int char_ ;
-	if (str == "nan" || str == "+inf" || str == "-inf")
-		throw (std::string)"impossible";
+	if (str == "nan" || str == "+inf" || str == "-inf") {
+		std::cout << "char: impossible" << std::endl;
+		return -1;
+	}
 	if (str.length() == 1 && isPrint(str))
 		char_  = str[0];
 	else
@@ -112,26 +114,28 @@ char ScalarConverter::toChar() {
 	bool isAscii = isPrint(str);
 	if (isAscii) {
 		_char = char_;
+		std::cout << "char: " << _char  << std::endl;
 		return _char;
 	}
 	else if ((ascii(str) < 32 || ascii(str) > 127) && !isError())
-		throw (std::string)"Non displayable";
+		std::cout << "char: Non displayable" << std::endl;
 	else
-		throw (std::string)"impossible";
+		std::cout << "char: impossible" << std::endl;
+	return -1;
 }
 
 
 int ScalarConverter::toInt() {
-	if (str == "nan" || str == "+inf" || str == "-inf")
-		throw (std::string)"impossible";
-	if (str.length() > 1 &&  isError())  {
-		const std::string err = "impossible";
-		throw err;
+	if (str == "nan" || str == "+inf" || str == "-inf" || (str.length() > 1 &&  isError())) {
+		std::cout << "int: impossible" << std::endl;
+		return -1;
 	}
+
 	long res = 0;
 	int count = 0;
 	if (str.length() == 1 && !std::isdigit(str[0])) {
 		_int = str[0];
+		std::cout << "int: " << _int << std::endl;
 		return _int;
  	}
 	int minisFound = 1;
@@ -142,38 +146,43 @@ int ScalarConverter::toInt() {
 	while (str[count] != '\0' && std::isdigit(str[count])) {
     res = res * 10 + str[count] - '0';
 		if (res > INT_MAX) {
-			std::string err = "imposisble";
-			throw err;
+			std::cout << "int: impossible" << std::endl;
+			return -1;
 		}
     count++;
   }
 	_int = res * minisFound;
+	std::cout << "int: " << _int << std::endl;
 	return _int;
 }
 
 float  ScalarConverter::toFloat() {
 	if (str.length() > 1 &&  isError())  {
-		const std::string err = "impossible";
-		throw err;
+		std::cout <<  "float: impossible" << std::endl;
+		return -1;
 	}
+	int nbrSetprecision = getNbrSetprecision();
 	if (str.length() == 1 && !std::isdigit(str[0])) {
 		_float = static_cast<float>(str[0]);
-		return _float;
- }
+ }else {
 	_float = std::strtod(str.c_str(), NULL);
+ }
+	std::cout << std::setprecision(nbrSetprecision) << "float: "    << _float << "f" << std::endl;
 	return _float;
 }
 
 double  ScalarConverter::toDouble() {
 	if (str.length() > 1 &&  isError())  {
-		const std::string err = "impossible";
-		throw err;
+		std::cout << "double: impossible" << std::endl;
+		return -1;
 	}
+	int nbrSetprecision = getNbrSetprecision();
 	if (str.length() == 1 && !std::isdigit(str[0])) {
 		_double =  static_cast<double>(str[0]);
-		return _double;
- }
-	_double = std::strtod(str.c_str(), NULL);
+ 	}else {
+		_double = std::strtod(str.c_str(), NULL);
+ 	}
+	std::cout << std::setprecision(nbrSetprecision) << "double: " <<_double << std::endl;
 	return _double;
 }
 
@@ -198,30 +207,10 @@ int ScalarConverter::getNbrSetprecision() {
 
 void ScalarConverter::convert(std::string s) {
 	str = s;
-	int nbrSetprecision = getNbrSetprecision();
 
-	try {	
-		std::cout << "char: " << toChar()  << std::endl;
-	} catch(const std::string & e) {
-		std::cerr << e << '\n';
-	}
-
-	try {	
-		std::cout << "int: " << toInt() << std::endl;
-	} catch(const std::string & a) {
-		std::cerr << a << '\n';
-	}
-
+	toChar();
+	toInt();
 	std::cout << std::fixed;
-	try {	
-		std::cout << std::setprecision(nbrSetprecision) << "float: "    << toFloat() << "f" << std::endl;
-	} catch(const std::string & a) {
-		std::cerr << a << '\n';
-	}
-
-	try {	
-		std::cout << std::setprecision(nbrSetprecision) << "double: "   << toDouble() << std::endl;
-	} catch(const std::string & a) {
-		std::cerr << a << '\n';
-	}
+	toFloat();
+	toDouble();
 }
