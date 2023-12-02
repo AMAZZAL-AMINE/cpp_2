@@ -1,25 +1,14 @@
-#include <unordered_multiset>
 #include <iostream>
 
-typedef struct t_data {
-  int a;
-} t_data;
-
-bool operator<(const t_data& lhs, const t_data& rhs) {
-  return lhs.a < rhs.a;
-}
-
-
 int main() {
-  std::unordered_multiset<t_data> gg;
-  t_data dd;
-  dd.a = 55555;
-  gg.insert(dd);
-  std::unordered_multiset<t_data, int>::iterator start = gg.begin();
-  while (start != gg.end()) {
-    t_data s = *start;
-    std::cout << s.a << std::endl;
-    start++;
+  int data[] = {20, 30, 50, 80, 90};
+  int size = 5;
+  int low = 0;
+  int high = size - 1;
+  int midle  = size / 2;
+  while (i != size) {
+
+    int h = size;
   }
   return 0;
 }

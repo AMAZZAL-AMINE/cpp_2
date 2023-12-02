@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 10:41:03 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/03 12:21:47 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/01 17:52:58 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ Serializer::Serializer(Serializer const &src) {
 Serializer::~Serializer() {}
 
 Serializer &Serializer::operator=(Serializer const &rhs) {
-  if (this != &rhs) {}
+    if (this != &rhs) {}
   return *this;
 }
 
