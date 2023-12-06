@@ -99,7 +99,7 @@ class FJA {
         vec.erase(vec.end() - (vec.size() % (size * 2)), vec.end());
       }
 
-      //fill pairs
+        //fill pairs
       for(int count = 0; count < vec.size(); count+= size*2) {
         std::vector<int> first, secnd;
         //   0 4 1 11 5 9 10 21 2555 23 75 26
@@ -114,7 +114,7 @@ class FJA {
 
       //clear stsack
       vec.clear();
-      //push back to stack  with new ordered numbers
+      //push back to stack  with new sorted numbers
       for (size_t i = 0; i < pairs.size(); i++)
       {
         std::vector<int>& subvector = pairs[i].first;
