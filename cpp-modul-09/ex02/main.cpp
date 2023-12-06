@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:39:35 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/12/02 17:00:58 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/04 19:45:20 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ int main(int argc, char __unused **argv) {
       PmergeObj.checkArgment(arg);
       PmergeObj.pushArg(arg);
     }
+    PmergeObj.start();
     PmergeObj.displayStackBefor();
-    PmergeObj.gropStackIntoPairs();
-    PmergeObj.sortEachPairs();
-    PmergeObj.displayPairs();
   }catch(std::string & e) {
     std::cout << e << std::endl;
   }

@@ -6,6 +6,7 @@
 class PmergeMe {
     private :
       std::string args;
+      std::vector<int> repair;
       std::vector<int> stack;
       std::vector<std::vector<int> > pairs;
       // creat main chain and pend
@@ -19,10 +20,7 @@ class PmergeMe {
       void pushArg(std::string args);
       void displayStackBefor();
       void checkArgment(std::string & arg);
-      void gropStackIntoPairs();
-      void displayPairs();
-      void sortEachPairs();
-      void sortAllPairs(std::vector<std::vector<int> >& pairs, size_t index = 0);
+      void start();
   };
 
 #endif
