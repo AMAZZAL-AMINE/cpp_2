@@ -117,7 +117,8 @@ class FJA {
       std::vector<std::vector<int> >::iterator chineStart = chine.begin();
       std::vector<std::vector<int> >::iterator pendStart = pend.begin();
       std::cout << "MAINCHINE : ";
-      for(; chineStart != chine.end(); chineStart++) {
+      fo
+      .r(; chineStart != chine.end(); chineStart++) {
         std::vector<int> & temp = *chineStart;
         for(std::vector<int>::iterator start = temp.begin(); start != temp.end(); start++)
           std::cout << *start << " ";
