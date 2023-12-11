@@ -1,0 +1,58 @@
+`    pairs.clear();
+    std::deque<std::deque<int> > main_chain;
+    std::deque<std::deque<int> > pend_chain;
+    std::deque<int> jacob_arr;
+    for (size_t i = 0; i < d.size(); i += size * 2)
+    {
+        std::deque<int> first_deque;
+        std::deque<int> second_deque;
+        for (size_t j = i; j < i + size; j++)
+            first_deque.push_back(d[j]);
+        for (size_t j = i + size; j < i + size * 2; j++)
+            second_deque.push_back(d[j]);
+        pairs.push_back(std::make_pair(first_deque, second_deque));
+        main_chain.push_back(pairs.back().second);
+        pend_chain.push_back(pairs.back().first);
+    }
+    if (!pend_chain.empty())
+        main_chain.push_front(pend_chain.front());
+    if (pend_chain.size() >= 2)
+    {
+        std::deque<std::deque<int> >::iterator it = std::lower_bound(main_chain.begin(), main_chain.begin() + 2, pend_chain[1], Compare);
+        main_chain.insert(it, pend_chain[1]);
+    }
+    for(size_t i = 2; i <= pend_chain.size(); i++)
+    {
+        int j = jacobsthal(i);
+		if(j >= (int)(pend_chain.size()))
+		{
+			jacob_arr.push_back(pend_chain.size() - 1);
+			break;
+		}
+		else
+			jacob_arr.push_back(jacobsthal(i));
+    }
+    int start = 2;
+    for(size_t i = 0; i < jacob_arr.size();)
+    {
+        int j = jacob_arr.at(i);
+        if (j >= (int)pend_chain.size())
+            j = pend_chain.size() - 1;
+        int tmp = j;
+        while (j >= start)
+        {
+            std::deque<std::deque<int> >::iterator it = std::lower_bound(main_chain.begin(), main_chain.end(), pend_chain[j], Compare);
+            main_chain.insert(it, pend_chain[j]);
+            j--;
+        }
+        start = tmp + 1;
+        i++;
+    }
+    if (!tmp.empty())
+    {
+        std::deque<std::deque<int> >::iterator it = std::lower_bound(main_chain.begin(), main_chain.end(), tmp, Compare);
+        main_chain.insert(it, tmp);
+    }
+    d.clear();
+    for (std::deque<std::deque<int> >::iterator it = main_chain.begin(); it != main_chain.end(); ++it)
+        d.insert(d.end(), it->begin(), it->end());`q
