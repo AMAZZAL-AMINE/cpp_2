@@ -1,6 +1,10 @@
 #include <iostream>
 #include <vector>
 
+int compare(const std::vector<int> & a, const  std::vector<int> & b) {
+  return (a.back() < b.back());
+}
+
 class FJA {
   private :
     std::vector<int> data;
@@ -102,23 +106,34 @@ class FJA {
           pendchine.push_back(*halfStart);
         index++;
       }
-      if (tmp.size() > 0) {
+      if (tmp.size() > 0)
         pendchine.push_back(tmp);
-        std::cout << "PUSHED THE REMAIN TO THE TEMP" << std::endl;
+      if (pendchine.size() > 0) {
+        for(int count  = 0; count <  pendchine.size(); count++) {
+          std::vector<int> const penTmp = pendchine[count];
+          std::vector<std::vector<int> >::iterator postion = lower_bound(mainChine.begin(), mainChine.end(), penTmp, compare);
+          mainChine.insert(postion, penTmp);
+        }
       }
-      
-      // pendchine.push_back(tmp);
+      vec.clear();
+      if (mainChine.size() > 0) {
+        for(std::vector<std::vector<int> >::iterator start = mainChine.begin(); start != mainChine.end(); start++) {
+          std::vector<int> mainTemp = *start;
+          for(int i = 0; i < mainTemp.size(); i++) {
+            vec.push_back(mainTemp[i]);
+          }
+        }
+      }
       this->displayNumbers(vec);
       std::cout << "\n";
       this->displayChineAndPend(mainChine, pendchine);
     }
-
+  
     void displayChineAndPend(std::vector<std::vector<int> > & chine, std::vector<std::vector<int> > & pend) {
       std::vector<std::vector<int> >::iterator chineStart = chine.begin();
       std::vector<std::vector<int> >::iterator pendStart = pend.begin();
       std::cout << "MAINCHINE : ";
-      fo
-      .r(; chineStart != chine.end(); chineStart++) {
+      for(; chineStart != chine.end(); chineStart++) {
         std::vector<int> & temp = *chineStart;
         for(std::vector<int>::iterator start = temp.begin(); start != temp.end(); start++)
           std::cout << *start << " ";
@@ -143,6 +158,6 @@ int main(int argc, char **argv) {
     count++;
   }
   fja.merge();
-  // fja.displayNumbers();
+  fja.displayNumbers();
   return 0;
 }
