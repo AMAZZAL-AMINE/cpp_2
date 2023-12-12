@@ -1,7 +1,10 @@
 #include <iostream>
 #include <vector>
 
+int comparizonCound = 0;
+
 int compare(const std::vector<int> & a, const  std::vector<int> & b) {
+  comparizonCound++;
   return (a.back() < b.back());
 }
 
@@ -52,28 +55,35 @@ class FJA {
 
       std::vector<int> tmp;
       //push the odd umbers to tempory 
-      if (vec.size() % 2 != 0) {
-        int sizeLop = vec.size() - vec.size() % 2;
-        for(; sizeLop != vec.size(); sizeLop++)
-          tmp.push_back(vec[sizeLop]);
-        vec.erase(vec.end() - (vec.size() % (size * 2)), vec.end());
+      if (vec.size() % (size * 2) != 0) {
+        int sizeLop = vec.size() - size;
+        tmp.insert(tmp.begin(), vec.end() - size, vec.end());
+        vec.erase(vec.end() - size, vec.end());
+        // for(int i  =0; i < tmp.size(); i++)
+        //   std::cout << tmp[i] <<  " " ;
+        // std::cout << "\n";
       }
-      // this->remain = tmp;
+
+      // spit the numbers into pairs as size * 2
       int count = 0;
       while (count < vec.size()) {          
         std::vector<int> first, secnd;
-        for(int i = count; i < count + size; i++)
-          first.push_back(vec[i]);
-        for(int i = count + size; i < count + (size * 2); i++)
-          secnd.push_back(vec[i]);
-        if (first.back() > secnd.back())
+        int index = count - 1;
+        while(++index < count + size)
+          first.push_back(vec[index]);
+        index = (count + size) - 1;
+        while(++index < count + (size * 2))
+          secnd.push_back(vec[index]);
+        if (first.back() > secnd.back()) {
+          comparizonCound++;
           std::swap(first, secnd);
+        }
         pairs.push_back(std::make_pair(first, secnd));
         count += size * 2;
       }
 
       vec.clear();
-      //// Merge sorted pairs
+      //// Merge pairs in ou collection again 
       for (size_t i = 0; i < pairs.size(); i++) {
         std::vector<int>& subvector = pairs[i].first;
         std::vector<int>& ssubvector = pairs[i].second;
@@ -82,7 +92,9 @@ class FJA {
         for (size_t j = 0; j < size; j++)
           vec.push_back(ssubvector[j]);
       }
+      //recursive 
       mergeAndSortPairs(vec, size * 2);
+      //split the collection to parts
       std::vector<std::vector<int> > halfers;
       for(int count = 0; count < vec.size(); count += size * 2) {
         std::vector<int> f,s;
@@ -96,7 +108,7 @@ class FJA {
 
       std::vector<std::vector<int> > mainChine;
       std::vector<std::vector<int> > pendchine;
-      //push to ped and mainchine
+      //push to pend and mainchine
       std::vector<std::vector<int> >::iterator halfStart = halfers.begin();
       int index = 0;
       for(; halfStart != halfers.end(); halfStart++) {
@@ -108,25 +120,27 @@ class FJA {
       }
       if (tmp.size() > 0)
         pendchine.push_back(tmp);
+
+      //sort the numbers using lower_bound
       if (pendchine.size() > 0) {
         for(int count  = 0; count <  pendchine.size(); count++) {
-          std::vector<int> const penTmp = pendchine[count];
+          std::vector<int>  penTmp = pendchine[count];
           std::vector<std::vector<int> >::iterator postion = lower_bound(mainChine.begin(), mainChine.end(), penTmp, compare);
           mainChine.insert(postion, penTmp);
         }
       }
       vec.clear();
+
+      //push back the mainchine toe our collection
       if (mainChine.size() > 0) {
         for(std::vector<std::vector<int> >::iterator start = mainChine.begin(); start != mainChine.end(); start++) {
           std::vector<int> mainTemp = *start;
-          for(int i = 0; i < mainTemp.size(); i++) {
+          for(int i = 0; i < mainTemp.size(); i++)
             vec.push_back(mainTemp[i]);
-          }
         }
       }
-      this->displayNumbers(vec);
-      std::cout << "\n";
-      this->displayChineAndPend(mainChine, pendchine);
+      // this->displayNumbers(vec);
+      // std::cout << "\n";
     }
   
     void displayChineAndPend(std::vector<std::vector<int> > & chine, std::vector<std::vector<int> > & pend) {
@@ -159,5 +173,7 @@ int main(int argc, char **argv) {
   }
   fja.merge();
   fja.displayNumbers();
+  std::cout << "\n";
+  std::cout << "CONPARIZION : " << comparizonCound << "\n";
   return 0;
 }
