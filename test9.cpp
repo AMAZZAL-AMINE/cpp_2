@@ -8,6 +8,20 @@ int compare(const std::vector<int> & a, const  std::vector<int> & b) {
   return (a.back() < b.back());
 }
 
+std::vector<int> jacobsthalGenerator(int max) {
+  std::vector<int> J;
+  int count = 0;
+  J.push_back(0);
+  J.push_back(1);
+  while(count < max) {
+     int re = J[count - 1] + (2 * J[count - 2]);
+      if (re > 0)
+        J.push_back(re);
+    count++;
+  }
+  return J;
+}
+
 class FJA {
   private :
     std::vector<int> data;
@@ -123,7 +137,8 @@ class FJA {
 
       //sort the numbers using lower_bound
       if (pendchine.size() > 0) {
-        for(int count  = 0; count <  pendchine.size(); count++) {
+        mainChine.insert(mainChine.begin(), pendchine.front());
+        for(int count  = 1; count <  pendchine.size(); count++) {
           std::vector<int>  penTmp = pendchine[count];
           std::vector<std::vector<int> >::iterator postion = lower_bound(mainChine.begin(), mainChine.end(), penTmp, compare);
           mainChine.insert(postion, penTmp);
@@ -163,7 +178,6 @@ class FJA {
     }
 };
 
-
 int main(int argc, char **argv) {
   int count = 1;
   FJA fja;
@@ -172,6 +186,7 @@ int main(int argc, char **argv) {
     count++;
   }
   fja.merge();
+  std::cout << "FINAL RESULT : ";
   fja.displayNumbers();
   std::cout << "\n";
   std::cout << "CONPARIZION : " << comparizonCound << "\n";
