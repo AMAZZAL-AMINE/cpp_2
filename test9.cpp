@@ -8,6 +8,7 @@ int compare(const std::vector<int> & a, const  std::vector<int> & b) {
   return (a.back() < b.back());
 }
 
+
 std::vector<int> jacobsthalGenerator(int max) {
   std::vector<int> J;
   int count = 0;
@@ -134,8 +135,10 @@ class FJA {
       }
       if (tmp.size() > 0)
         pendchine.push_back(tmp);
+      //jacobsthal generator 
+      std::vector<int> __unused jacobsthal = jacobsthalGenerator(pendchine.size());
 
-      //sort the numbers using lower_bound
+      // sort the numbers using lower_bound
       if (pendchine.size() > 0) {
         mainChine.insert(mainChine.begin(), pendchine.front());
         for(int count  = 1; count <  pendchine.size(); count++) {

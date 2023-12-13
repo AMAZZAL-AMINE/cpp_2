@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:39:35 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/22 21:42:56 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/13 14:55:00 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,7 @@ int main() {
   try {
     Array<std::string>  arr(6);
     arr[2] = "hello";
-    std::cout << arr[5] << std::endl;
-    while (1);
+    std::cout << arr[2] << std::endl;
   }catch(std::exception & e) {
     std::cout << e.what() << std::endl;
   }
