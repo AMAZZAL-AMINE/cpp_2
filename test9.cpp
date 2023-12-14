@@ -11,13 +11,14 @@ int compare(const std::vector<int> & a, const  std::vector<int> & b) {
 
 std::vector<int> jacobsthalGenerator(int max) {
   std::vector<int> J;
-  int count = 0;
+  int count = 2;
+  int result = 0;
   J.push_back(0);
   J.push_back(1);
-  while(count < max) {
-     int re = J[count - 1] + (2 * J[count - 2]);
-      if (re > 0)
-        J.push_back(re);
+  while (result < max) {
+    int re = J[count - 1] + (2 * J[count - 2]);
+    J.push_back(re);
+    result = re;
     count++;
   }
   return J;
@@ -133,22 +134,36 @@ class FJA {
           pendchine.push_back(*halfStart);
         index++;
       }
-      if (tmp.size() > 0)
-        pendchine.push_back(tmp);
       //jacobsthal generator 
+      std::vector<int> penTmp;
       std::vector<int> __unused jacobsthal = jacobsthalGenerator(pendchine.size());
 
+    //push the remain to the pendchin
+      if (tmp.size() > 0) 
+        pendchine.push_back(tmp);
+
+      //insert the first two elemnt in pend to mainchin
+      if (pendchine.size() > 0)
+        mainChine.insert(mainChine.begin(), pendchine[0]);
+
       // sort the numbers using lower_bound
+      count = 1;
       if (pendchine.size() > 0) {
-        mainChine.insert(mainChine.begin(), pendchine.front());
-        for(int count  = 1; count <  pendchine.size(); count++) {
-          std::vector<int>  penTmp = pendchine[count];
-          std::vector<std::vector<int> >::iterator postion = lower_bound(mainChine.begin(), mainChine.end(), penTmp, compare);
-          mainChine.insert(postion, penTmp);
+        for(int index = 0; index < jacobsthal.size(); index++) {
+          int counterTmp = jacobsthal[index];
+          int jacobIndex = jacobsthal[index];
+          if (jacobIndex >= pendchine.size())
+            jacobIndex = pendchine.size() - 1;
+          for (; jacobIndex >= count; jacobIndex--) {
+            penTmp = pendchine[jacobIndex];
+            std::vector<std::vector<int> >::iterator postion = lower_bound(mainChine.begin(), mainChine.end(), penTmp, compare);
+            mainChine.insert(postion, penTmp);
+          }
+          count = counterTmp + 1;
         }
       }
+      
       vec.clear();
-
       //push back the mainchine toe our collection
       if (mainChine.size() > 0) {
         for(std::vector<std::vector<int> >::iterator start = mainChine.begin(); start != mainChine.end(); start++) {
