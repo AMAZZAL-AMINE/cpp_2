@@ -155,8 +155,7 @@ class FJA {
         int jacTmp = jacIndex;
         while (jacIndex >= count) {
             std::vector<int> original = pendchine[jacIndex];
-          std::vector<std::vector<int> >::iterator max =  std::max_element(mainChine.begin(), mainChine.end());
-          std::vector<std::vector<int> >::iterator position = lower_bound(mainChine.begin(), max, original, compare);
+          std::vector<std::vector<int> >::iterator position = lower_bound(mainChine.begin(), mainChine.end(), original, compare);
           mainChine.insert(position, original);
           jacIndex--;
         }
