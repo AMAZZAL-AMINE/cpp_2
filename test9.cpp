@@ -137,32 +137,33 @@ class FJA {
       //jacobsthal generator 
       std::vector<int> penTmp;
       std::vector<int> __unused jacobsthal = jacobsthalGenerator(pendchine.size());
-
     //push the remain to the pendchin
       if (tmp.size() > 0) 
         pendchine.push_back(tmp);
-
       //insert the first two elemnt in pend to mainchin
-      if (pendchine.size() > 0)
-        mainChine.insert(mainChine.begin(), pendchine[0]);
-
-      // sort the numbers using lower_bound
-      count = 1;
       if (pendchine.size() > 0) {
-        for(int index = 0; index < jacobsthal.size(); index++) {
-          int counterTmp = jacobsthal[index];
-          int jacobIndex = jacobsthal[index];
-          if (jacobIndex >= pendchine.size())
-            jacobIndex = pendchine.size() - 1;
-          for (; jacobIndex >= count; jacobIndex--) {
-            penTmp = pendchine[jacobIndex];
-            std::vector<std::vector<int> >::iterator postion = lower_bound(mainChine.begin(), mainChine.end(), penTmp, compare);
-            mainChine.insert(postion, penTmp);
-          }
-          count = counterTmp + 1;
-        }
+        mainChine.insert(mainChine.begin(), pendchine[0]);
       }
-      
+
+      count = 1;
+      // sort the numbers using lower_bound
+       index = 1;
+      while (index < jacobsthal.size()) {
+        int jacIndex = jacobsthal[index];
+        if (jacIndex >= pendchine.size())
+          jacIndex = pendchine.size() - 1;
+        int jacTmp = jacIndex;
+        while (jacIndex >= count) {
+            std::vector<int> original = pendchine[jacIndex];
+          std::vector<std::vector<int> >::iterator max =  std::max_element(mainChine.begin(), mainChine.end());
+          std::vector<std::vector<int> >::iterator position = lower_bound(mainChine.begin(), max, original, compare);
+          mainChine.insert(position, original);
+          jacIndex--;
+        }
+        count = jacTmp + 1;
+        index++;
+      }
+
       vec.clear();
       //push back the mainchine toe our collection
       if (mainChine.size() > 0) {
