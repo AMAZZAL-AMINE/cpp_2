@@ -148,7 +148,7 @@ class FJA {
       count = 2;
       // sort the numbers using lower_bound
       index = 0;
-      while (index <= jacobsthal.size()) {
+      while (index < jacobsthal.size()) {
         int jacIndex = jacobsthal[index];
         if (jacIndex >= pendchine.size())
           jacIndex = pendchine.size() - 1;
