@@ -15,7 +15,7 @@ std::vector<int> jacobsthalGenerator(int max) {
   int result = 0;
   J.push_back(0);
   J.push_back(1);
-  while (result < max) {
+  while (result <= max) {
     int re = J[count - 1] + (2 * J[count - 2]);
     J.push_back(re);
     result = re;
@@ -90,8 +90,8 @@ class FJA {
         index = (count + size) - 1;
         while(++index < count + (size * 2))
           secnd.push_back(vec[index]);
+        comparizonCound++;
         if (first.back() > secnd.back()) {
-          comparizonCound++;
           std::swap(first, secnd);
         }
         pairs.push_back(std::make_pair(first, secnd));
@@ -137,27 +137,32 @@ class FJA {
       //jacobsthal generator 
       std::vector<int> penTmp;
       std::vector<int> __unused jacobsthal = jacobsthalGenerator(pendchine.size());
+
     //push the remain to the pendchin
       if (tmp.size() > 0) 
         pendchine.push_back(tmp);
       //insert the first two elemnt in pend to mainchin
-      if (pendchine.size() > 0) {
+      if (pendchine.size() > 0)
         mainChine.insert(mainChine.begin(), pendchine[0]);
-      }
 
-      count = 1;
+      count = 2;
       // sort the numbers using lower_bound
-       index = 1;
-      while (index < jacobsthal.size()) {
+      index = 0;
+      while (index <= jacobsthal.size()) {
         int jacIndex = jacobsthal[index];
         if (jacIndex >= pendchine.size())
           jacIndex = pendchine.size() - 1;
         int jacTmp = jacIndex;
+        int i = 0;
         while (jacIndex >= count) {
-            std::vector<int> original = pendchine[jacIndex];
-          std::vector<std::vector<int> >::iterator position = lower_bound(mainChine.begin(), mainChine.end(), original, compare);
+          std::vector<int> original = pendchine[jacIndex];
+          int magicSize = (jacIndex + count+i);
+          if (magicSize > mainChine.size())
+            magicSize = mainChine.size() - 1;
+          std::vector<std::vector<int> >::iterator position = lower_bound(mainChine.begin(), mainChine.begin() + magicSize, original, compare);
           mainChine.insert(position, original);
           jacIndex--;
+          i++;
         }
         count = jacTmp + 1;
         index++;
