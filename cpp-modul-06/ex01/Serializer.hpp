@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/03 10:41:23 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/17 15:47:13 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/16 09:26:29 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 
 class Serializer {
   private :
-  public :
     Serializer();
+  public :
     Serializer(Serializer const &src);
     ~Serializer();
     Serializer &operator=(Serializer const &rhs);
