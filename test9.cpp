@@ -21,6 +21,8 @@ std::vector<int> jacobsthalGenerator(int max) {
     result = re;
     count++;
   }
+  J.erase(J.begin());
+  J.erase(J.begin());
   return J;
 }
 
@@ -142,30 +144,49 @@ class FJA {
       if (tmp.size() > 0) 
         pendchine.push_back(tmp);
       //insert the first two elemnt in pend to mainchin
-      if (pendchine.size() > 0)
-        mainChine.insert(mainChine.begin(), pendchine[0]);
+      // if (pendchine.size() > 2) {
+      //   mainChine.insert(mainChine.begin(), pendchine.begin(), pendchine.begin() + 2);
+      //   count = 2;
+      // }else {
+      //   mainChine.insert(mainChine.begin(), pendchine.begin(), pendchine.end());
+      //   count = pendchine.size();
+      // }
 
-      count = 2;
+      // count = 2;
       // sort the numbers using lower_bound
-      index = 0;
-      while (index < jacobsthal.size()) {
-        int jacIndex = jacobsthal[index];
-        if (jacIndex >= pendchine.size())
-          jacIndex = pendchine.size() - 1;
-        int jacTmp = jacIndex;
-        int i = 0;
-        while (jacIndex >= count) {
-          std::vector<int> original = pendchine[jacIndex];
-          int magicSize = (jacIndex + count+i);
-          if (magicSize > mainChine.size())
-            magicSize = mainChine.size() - 1;
-          std::vector<std::vector<int> >::iterator position = lower_bound(mainChine.begin(), mainChine.begin() + magicSize, original, compare);
-          mainChine.insert(position, original);
-          jacIndex--;
-          i++;
+      // index = 0;
+      int i = 0;
+      int amin = 0;
+      int prev = 0;
+      while (i < jacobsthal.size())
+      {
+        
+        int jacob = jacobsthal[i];
+
+        while (jacob > prev)
+        {
+          // std::cout << "i : " << i << "\n";
+          if (jacob - 1 < pendchine.size())
+          {
+            if (jacob - 1 == 0)
+            {
+              mainChine.insert(mainChine.begin(), pendchine[jacob - 1]);
+              amin++;
+            }
+            else
+            {
+              std::vector<int> original = pendchine[jacob - 1];
+              std::vector<std::vector<int> >::iterator position = lower_bound(mainChine.begin(), mainChine.begin() + jacob + amin - 1, original, compare);
+              mainChine.insert(position, original);
+              amin++;
+            }
+          }
+          else
+            jacob = pendchine.size();
+          jacob--;
         }
-        count = jacTmp + 1;
-        index++;
+        prev = jacobsthal[i];
+        i++;
       }
 
       vec.clear();
