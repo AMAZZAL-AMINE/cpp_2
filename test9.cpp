@@ -77,9 +77,6 @@ class FJA {
         int sizeLop = vec.size() - size;
         tmp.insert(tmp.begin(), vec.end() - size, vec.end());
         vec.erase(vec.end() - size, vec.end());
-        // for(int i  =0; i < tmp.size(); i++)
-        //   std::cout << tmp[i] <<  " " ;
-        // std::cout << "\n";
       }
 
       // spit the numbers into pairs as size * 2
@@ -139,38 +136,23 @@ class FJA {
       //jacobsthal generator 
       std::vector<int> penTmp;
       std::vector<int> __unused jacobsthal = jacobsthalGenerator(pendchine.size());
-
-    //push the remain to the pendchin
       if (tmp.size() > 0) 
         pendchine.push_back(tmp);
-      //insert the first two elemnt in pend to mainchin
-      // if (pendchine.size() > 2) {
-      //   mainChine.insert(mainChine.begin(), pendchine.begin(), pendchine.begin() + 2);
-      //   count = 2;
-      // }else {
-      //   mainChine.insert(mainChine.begin(), pendchine.begin(), pendchine.end());
-      //   count = pendchine.size();
-      // }
-
-      // count = 2;
-      // sort the numbers using lower_bound
-      // index = 0;
+    //push the remain to the pendchin
       int i = 0;
       int amin = 0;
       int prev = 0;
       while (i < jacobsthal.size())
       {
-        
         int jacob = jacobsthal[i];
 
         while (jacob > prev)
         {
-          // std::cout << "i : " << i << "\n";
           if (jacob - 1 < pendchine.size())
           {
             if (jacob - 1 == 0)
             {
-              mainChine.insert(mainChine.begin(), pendchine[jacob - 1]);
+              mainChine.insert(mainChine.begin(), pendchine[0]);
               amin++;
             }
             else
@@ -180,15 +162,17 @@ class FJA {
               mainChine.insert(position, original);
               amin++;
             }
+            jacob--;
           }
           else
             jacob = pendchine.size();
-          jacob--;
         }
         prev = jacobsthal[i];
         i++;
       }
-
+      std::cout << "mainchine size : " << mainChine.size() << "\n";
+      this->displayNumbers(vec);
+      std::cout << "\n";
       vec.clear();
       //push back the mainchine toe our collection
       if (mainChine.size() > 0) {
