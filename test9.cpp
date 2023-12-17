@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 
 int comparizonCound = 0;
 
@@ -29,12 +30,7 @@ std::vector<int> jacobsthalGenerator(int max) {
 class FJA {
   private :
     std::vector<int> data;
-    std::vector<std::vector<int> > newData;
-    std::vector<int> remain;
-    std::vector<int> mainChine;
-    std::vector<int> pend;
-    std::vector<int>::iterator getBeginOfStack;
-    std::vector<std::pair<std::vector<int>, std::vector<int> > > pairs;
+    std::queue<int> queue;
   public :
     void setNumbers(std::string str) {
       int count = 0;
@@ -62,10 +58,10 @@ class FJA {
     }
 
     void merge() {
-      mergeAndSortPairs(this->data, 1);
+      mergeAndSortPairsVector(this->data, 1);
     }
 
-    void mergeAndSortPairs(std::vector<int> & vec, int size) {
+    void mergeAndSortPairsVector(std::vector<int> & vec, int size) {
       if (size * 2 > vec.size())
         return ;
 
@@ -108,7 +104,7 @@ class FJA {
           vec.push_back(ssubvector[j]);
       }
       //recursive 
-      mergeAndSortPairs(vec, size * 2);
+      mergeAndSortPairsVector(vec, size * 2);
       //split the collection to parts
       std::vector<std::vector<int> > halfers;
       for(int count = 0; count < vec.size(); count += size * 2) {
@@ -170,9 +166,6 @@ class FJA {
         prev = jacobsthal[i];
         i++;
       }
-      std::cout << "mainchine size : " << mainChine.size() << "\n";
-      this->displayNumbers(vec);
-      std::cout << "\n";
       vec.clear();
       //push back the mainchine toe our collection
       if (mainChine.size() > 0) {
@@ -182,28 +175,8 @@ class FJA {
             vec.push_back(mainTemp[i]);
         }
       }
-      // this->displayNumbers(vec);
-      // std::cout << "\n";
     }
-  
-    void displayChineAndPend(std::vector<std::vector<int> > & chine, std::vector<std::vector<int> > & pend) {
-      std::vector<std::vector<int> >::iterator chineStart = chine.begin();
-      std::vector<std::vector<int> >::iterator pendStart = pend.begin();
-      std::cout << "MAINCHINE : ";
-      for(; chineStart != chine.end(); chineStart++) {
-        std::vector<int> & temp = *chineStart;
-        for(std::vector<int>::iterator start = temp.begin(); start != temp.end(); start++)
-          std::cout << *start << " ";
-      }
-      std::cout << "\n";
-      std::cout << "PEND      : ";
-      for(; pendStart != pend.end(); pendStart++) {
-        std::vector<int> & temp = *pendStart;
-        for(std::vector<int>::iterator start = temp.begin(); start != temp.end(); start++)
-          std::cout << *start << " ";
-      }
-      std::cout << "\n";
-    }
+    
 };
 
 int main(int argc, char **argv) {
@@ -213,10 +186,15 @@ int main(int argc, char **argv) {
     fja.setNumbers(argv[count]);
     count++;
   }
+  std::cout << "Before: ";
+  fja.displayNumbers();
+  double VectorStart = std::clock();
   fja.merge();
-  std::cout << "FINAL RESULT : ";
+  double VectorEnd = std::clock();
+  std::cout << "After: ";
   fja.displayNumbers();
   std::cout << "\n";
-  std::cout << "CONPARIZION : " << comparizonCound << "\n";
+  std::cout << "Time to process a range of " << "5" << " elements with std::vecotr : 0.0" << VectorEnd - VectorStart << " us\n";
+  // std::cout << "CONPARIZION : " << comparizonCound << "\n";
   return 0;
 }
