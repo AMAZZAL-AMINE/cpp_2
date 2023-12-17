@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:39:35 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/12/17 18:43:25 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/17 18:43:56 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void print(T& x )
 int main() {
   int __unused tab[] = { 0, 1, 2, 3, 4 };
   Awesome tab2[5];
-  //this not work
+
   iter( tab, 5, print<const int> );
   iter( tab2, 5, print<Awesome> );
 
