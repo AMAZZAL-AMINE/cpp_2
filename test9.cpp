@@ -9,7 +9,6 @@ int compare(const std::vector<int> & a, const  std::vector<int> & b) {
   return (a.back() < b.back());
 }
 
-
 std::vector<int> jacobsthalGenerator(int max) {
   std::vector<int> J;
   int count = 2;
@@ -26,6 +25,45 @@ std::vector<int> jacobsthalGenerator(int max) {
   J.erase(J.begin());
   return J;
 }
+
+std::vector<int>  pairsToVector(std::vector<std::pair<std::vector<int>, std::vector<int> > > & pairs, int size) {
+  std::vector<int> vec;
+  for (size_t i = 0; i < pairs.size(); i++) {
+    std::vector<int>& subvector = pairs[i].first;
+    std::vector<int>& ssubvector = pairs[i].second;
+    for (size_t j = 0; j < size; j++)
+      vec.push_back(subvector[j]);
+    for (size_t j = 0; j < size; j++)
+      vec.push_back(ssubvector[j]);
+  }
+  return vec;
+}
+
+std::vector<std::pair<std::vector<int>, std::vector<int> > > createPairs(std::vector<int> & vec, int size) {
+  int count = 0;
+  std::vector<std::pair<std::vector<int>, std::vector<int> > > pairs;
+  while (count < vec.size()) {
+    std::vector<int> first, secnd;
+    int index = count;
+    while(index < count + size) {
+      first.push_back(vec[index]);
+      index++;
+    }
+    index = count + size;
+    while(index < count + (size * 2)) {
+      secnd.push_back(vec[index]);
+      index++;
+    }
+    comparizonCound++;
+    if (first.back() > secnd.back()) {
+      std::swap(first, secnd);
+    }
+    pairs.push_back(std::make_pair(first, secnd));
+    count += size * 2;
+  }
+  return pairs;
+}
+
 
 class FJA {
   private :
@@ -51,20 +89,13 @@ class FJA {
       }
       std::cout << ";\n";
     }
-    void displayNumbers(std::vector<int> & gg) {
-      for(std::vector<int>::iterator start = gg.begin(); start < gg.end(); start++) {
-        std::cout << *start << " ";
-      }
-    }
 
     void merge() {
       mergeAndSortPairsVector(this->data, 1);
     }
 
     void mergeAndSortPairsVector(std::vector<int> & vec, int size) {
-      if (size * 2 > vec.size())
-        return ;
-
+      if (size * 2 > vec.size()) return;
       std::vector<std::pair<std::vector<int>, std::vector<int> > > pairs;
 
       std::vector<int> tmp;
@@ -74,37 +105,11 @@ class FJA {
         tmp.insert(tmp.begin(), vec.end() - size, vec.end());
         vec.erase(vec.end() - size, vec.end());
       }
-
-      // spit the numbers into pairs as size * 2
-      int count = 0;
-      while (count < vec.size()) {          
-        std::vector<int> first, secnd;
-        int index = count - 1;
-        while(++index < count + size)
-          first.push_back(vec[index]);
-        index = (count + size) - 1;
-        while(++index < count + (size * 2))
-          secnd.push_back(vec[index]);
-        comparizonCound++;
-        if (first.back() > secnd.back()) {
-          std::swap(first, secnd);
-        }
-        pairs.push_back(std::make_pair(first, secnd));
-        count += size * 2;
-      }
-
+      pairs = createPairs(vec, size);
       vec.clear();
-      //// Merge pairs in ou collection again 
-      for (size_t i = 0; i < pairs.size(); i++) {
-        std::vector<int>& subvector = pairs[i].first;
-        std::vector<int>& ssubvector = pairs[i].second;
-        for (size_t j = 0; j < size; j++)
-          vec.push_back(subvector[j]);
-        for (size_t j = 0; j < size; j++)
-          vec.push_back(ssubvector[j]);
-      }
-      //recursive 
+      vec = pairsToVector(pairs, size);
       mergeAndSortPairsVector(vec, size * 2);
+
       //split the collection to parts
       std::vector<std::vector<int> > halfers;
       for(int count = 0; count < vec.size(); count += size * 2) {
@@ -195,6 +200,6 @@ int main(int argc, char **argv) {
   fja.displayNumbers();
   std::cout << "\n";
   std::cout << "Time to process a range of " << "5" << " elements with std::vecotr : 0.0" << VectorEnd - VectorStart << " us\n";
-  // std::cout << "CONPARIZION : " << comparizonCound << "\n";
+  std::cout << "CONPARIZION : " << comparizonCound << "\n";
   return 0;
 }

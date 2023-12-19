@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 21:25:01 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/23 21:25:02 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/19 10:14:54 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void Span::addNumber(int nbr) {
     throw std::string("custom sigfault, the stack is full");
   }
 }
-
 
 int Span::shortestSpan() {
 
