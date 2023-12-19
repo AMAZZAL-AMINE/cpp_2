@@ -80,21 +80,16 @@ void PmergeMe::mergeAndSortPairsVector(std::vector<int> & vec, size_t size) {
   size_t i = 0;
   int amin = 0;
   size_t prev = 0;
-  while (i < jacobsthal.size())
-  {
+  while (i < jacobsthal.size()) {
     size_t jacob = jacobsthal[i];
 
-    while (jacob > prev)
-    {
-      if (jacob - 1 < pendchine.size())
-      {
-        if (jacob - 1 == 0)
-        {
+    while (jacob > prev) {
+      if (jacob - 1 < pendchine.size()) {
+        if (jacob - 1 == 0) {
           mainChine.insert(mainChine.begin(), pendchine[0]);
           amin++;
         }
-        else
-        {
+        else {
           std::vector<int> original = pendchine[jacob - 1];
           std::vector<std::vector<int> >::iterator position = lower_bound(mainChine.begin(), mainChine.begin() + jacob + amin - 1, original, compare);
           mainChine.insert(position, original);
@@ -168,21 +163,16 @@ void PmergeMe::mergeAndSortPairsDeque(std::deque<int> & deq, size_t size) {
   size_t i = 0;
   int amin = 0;
   size_t prev = 0;
-  while (i < jacobsthal.size())
-  {
+  while (i < jacobsthal.size()) {
     size_t jacob = jacobsthal[i];
 
-    while (jacob > prev)
-    {
-      if (jacob - 1 < pendchine.size())
-      {
-        if (jacob - 1 == 0)
-        {
+    while (jacob > prev) {
+      if (jacob - 1 < pendchine.size()) {
+        if (jacob - 1 == 0) {
           mainChine.insert(mainChine.begin(), pendchine[0]);
           amin++;
         }
-        else
-        {
+        else {
           std::deque<int> original = pendchine[jacob - 1];
           std::deque<std::deque<int> >::iterator position = lower_bound(mainChine.begin(), mainChine.begin() + jacob + amin - 1, original, compareDeque);
           mainChine.insert(position, original);
