@@ -10,9 +10,14 @@ void PmergeMe::setNumbers(std::string str) {
   int count = 0;
   int result = 0;
   int mes = 1;
-  if (str[0] == '-')
-    mes = -1;
+  if (str[0] == '-' || str[0] == '+') {
+    if (str[0] == '-')
+      mes = -1;
+    count++;
+  }
   while (str[count]) {
+    if (!std::isdigit(str[count]))
+      throw PmergeMe::badInputException();
     result = (result * 10) + (str[count] - 48);
     count++;
   }

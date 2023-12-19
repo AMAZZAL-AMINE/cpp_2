@@ -9,6 +9,8 @@ long satoi(std::string nbr) {
     count++;
   }
   while (count < static_cast<int>(nbr.length())) {
+    if (!std::isdigit(nbr[count]))
+      throw std::string("Error : bad input");
     result = (result * 10) + nbr[count] - 48;
     count++;
   }

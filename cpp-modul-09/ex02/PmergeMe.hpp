@@ -17,6 +17,12 @@ class PmergeMe {
       void merge();
       void mergeAndSortPairsVector(std::vector<int> & vec, size_t size);
       void mergeAndSortPairsDeque(std::deque<int> & vec, size_t size);
+
+      class badInputException : public std::exception {
+        const char *what() const throw() {
+          return "Error : BAD INPUT";
+        }
+      };
   };
 
 #endif
