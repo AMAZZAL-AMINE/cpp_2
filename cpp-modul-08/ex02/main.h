@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/22 11:39:38 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/11/24 16:46:59 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:19:17 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <algorithm>
 #include "MutantStack.hpp"
 
 #endif
