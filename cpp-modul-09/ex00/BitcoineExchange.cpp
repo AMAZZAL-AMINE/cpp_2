@@ -1,6 +1,6 @@
 #include "BitcoineExchange.hpp"
 
-BitcoineExchange::BitcoineExchange() {}
+BitcoineExchange::BitcoineExchange() {this->mapSize = 0;}
 BitcoineExchange::BitcoineExchange(BitcoineExchange const __unused &src){
   *this = src;
 }
@@ -14,6 +14,7 @@ BitcoineExchange & BitcoineExchange::operator=(BitcoineExchange const __unused &
 BitcoineExchange::~BitcoineExchange() {}
 
 BitcoineExchange::BitcoineExchange(std::string fileName) {
+  this->mapSize = 0;
   this->open(fileName);
 }
 
@@ -29,7 +30,7 @@ std::string BitcoineExchange::parseDate(std::string & line, int counter, int isd
 
   if (counter == 0 && (!isdb && line != "date | value"))
     throw std::string("Exeption Error : input file must start with : date | value");
-  while (i < line.length() && counter > 0) {
+  while (i < line.length() && counter >= 0) {
     if (!isdb && (line[i] == ' ' || line[i] == '|'))
       break;
     else if (isdb && line[i] == ',')
@@ -96,7 +97,7 @@ bool BitcoineExchange::checkDate(std::string & str) {
 bool BitcoineExchange::checkCharcters(std::string & str) {
   size_t count = -1;
   while (++count < str.length()) {
-    if (str[count] != '+' && str[count] != '-' && !std::isdigit(str[count]) && str[count] != ' ' && str[count] != '|')
+    if (str[count] != '+' && str[count] != '-' && !std::isdigit(str[count]) && str[count] != ' ' && str[count] != '|' && str[count] != '.')
       return true;
     if (str[count] == '+' && count != 13)
       return true;
@@ -136,11 +137,11 @@ bool BitcoineExchange::checkDateRange(std::string & date) {
   _month = toInt(month);
   _day = toInt(day);
 
-  if (year.length() != 4 || _year > 2023 || _year < 2009)
+  if (year.length() != 4 || _year > 2023 || _year < 2000)
     return 1;
-  if (month.length() != 2 || _month > 31 || _month < 1)
+  if (month.length() != 2 || _month > 12 || _month < 1)
     return 1;
-  if (day.length() != 2 || _day > 12 || _day < 1)
+  if (day.length() != 2 || _day > 31 || _day < 1)
     return 1;
   return false;
 }
@@ -175,19 +176,19 @@ std::string BitcoineExchange::parseValue(std::string & line, int counter, int is
     return "";
   if (isdb)
     i = line.find(",");
-  else 
+  else
     i = line.find("|");
   if (i  > line.length())
     return "";
   i++;
-  while (i < line.length() && counter > 0) {
-      date += line[i];
+  while (i < line.length() && counter >= 0) {
+    date += line[i];
     i++;
   }
   return date;
 }
 
-void BitcoineExchange::parse(int isdb) {
+void BitcoineExchange::parse(int isdb, std::map<long, t_data_input> & bitcoin) {
   t_data_input data;
   std::string value;
   std::string line;
@@ -211,7 +212,7 @@ void BitcoineExchange::parse(int isdb) {
         try
         {
           data.dateInDecimal = dateToDecimal(data.date);
-          double value_ = std::stod(value);
+          double value_ = std::strtod(value.c_str(), NULL);
           if (value_ > 1000 && !isdb)
             data.type = LARGE;
           else if (value_ < 0)
@@ -220,63 +221,81 @@ void BitcoineExchange::parse(int isdb) {
             data.value = value_;
         }
         catch(const std::invalid_argument & e) {
-            data.type = BADE_INPUT_;
+          data.type = BADE_INPUT_;
         }
       }
-      this->push(data);
+      this->push(data, bitcoin, isdb);
     }
     counter++;
   }
- if ((!isdb && counter == 1) || this->dataContainer.size() == 0)
+ if ((!isdb && counter == 1))
   throw std::string("Ops, Can't search using undfined date or value");
 }
 
-void BitcoineExchange::push(t_data_input &  data) {
-  this->dataContainer.insert(data);
-}
-
-void BitcoineExchange::display() {
-  std::multiset<t_data_input>::iterator start = this->dataContainer.begin();
-  while (start != this->dataContainer.end()) {
-    std::cout << "Date  : " << start->date << std::endl;
-    std::cout << "Value : " << start->value << std::endl;
-    std::cout << "TYPE : " << start->type << std::endl;
-    std::cout << "_____" << std::endl;
-    start++;
-  }
-}
-
-int loweBownRetrunCompar(const t_data_input& a, const t_data_input& b) {
-  return a.dateInDecimal < b.dateInDecimal;
-}
-
-bool operator<(const t_data_input& lhs, const t_data_input& rhs) {
-  return lhs.dateInDecimal < rhs.dateInDecimal;
-}
-
-void BitcoineExchange::getPriceOfDay(BitcoineExchange  & bitcoin) {
-  (void)bitcoin;
-  std::multiset<t_data_input>::iterator __unused inputStart = this->dataContainer.begin();
-  t_data_input data;
-  while (inputStart != this->dataContainer.end()) {
-    data = *inputStart;
-    if (data.type == NEGATIVE_)
+void BitcoineExchange::push(t_data_input &  data,  std::map<long, t_data_input> & bitcoin, int isbtc) {
+  if (isbtc)
+    this->dataContainer[data.dateInDecimal] = data;
+  else {
+    if (data.type == DEFAULT) {
+      std::map<long, t_data_input>::iterator result = bitcoin.lower_bound(data.dateInDecimal);
+      if (result != bitcoin.end()) {
+        if (result != bitcoin.begin() && result->second.dateInDecimal != data.dateInDecimal )
+          --result;
+        t_data_input result_ = result->second;
+        std::cout << data.date << " => " << data.value << " = " << data.value * result_.value << std::endl;
+      }else {
+        t_data_input result_ = bitcoin.rbegin()->second;
+        std::cout << data.date << " => " << data.value << " = " << result_.value * data.value  << std::endl;
+      }
+    }else if (data.type == NEGATIVE_)
       std::cout << "Error: not a positive number." << std::endl;
     else if (data.type == BADE_INPUT_)
-      std::cout << "Error: bad input => " << data.fullDate << std::endl;
+      std::cout << "Error: bad input => " + data.fullDate << std::endl;
     else if (data.type == LARGE)
-      std::cout << "Error: too large a number."  << std::endl;
-    else {
-        std::multiset<t_data_input>::iterator lowerBound = std::lower_bound(
-        bitcoin.dataContainer.begin(), bitcoin.dataContainer.end(), data, loweBownRetrunCompar);
-        if (lowerBound != bitcoin.dataContainer.end()) {
-          t_data_input result = *lowerBound;
-          std::cout << data.date << " => " << data.value << " = " << data.value * result.value << std::endl;
-        }else {
-          t_data_input result = *bitcoin.dataContainer.rbegin();
-          std::cout << data.date << " => " << data.value << " = " << data.value * result.value << std::endl;
-        }
-    }
-    inputStart++;
+      std::cout << "Error: too large a number." << std::endl;
   }
+}
+
+
+void checkDataBase(std::string & line) {
+  int countPoint = 0;
+  for(size_t i = 0; i < line.length(); i++) {
+    if (line[i] == ',') {
+      if (i != 10)
+        throw std::string("Exeption Error : you are not allowed to change the date format");
+    }
+    else if (line[i] == '.')
+      countPoint++;
+    else if (line[i] == '-') {
+      if (i != 4 && i != 7)
+        throw std::string("Exeption Error : you are not allowed to change the date format");
+    }else if (!std::isdigit(line[i]))
+      throw std::string("Exeption Error : you are not allowed to change the date format");
+  }
+  if (countPoint > 1)
+    throw std::string("Exeption Error : you are not allowed to change the date format");
+}
+
+void BitcoineExchange::parseDataBase(std::string & file) {
+  std::string line;
+  std::ifstream filedb;
+  filedb.open(file);
+  if (filedb.peek() == std::ifstream::traits_type::eof())
+    throw std::string("Exception Error : fail to open file");
+  while (std::getline(filedb, line)) {
+    if (line.empty())
+      throw std::string("Exeption Error : please check the database file");
+    if (line == "date,exchange_rate")
+      continue;
+    t_data_input data;
+    checkDataBase(line);
+    data.date = this->parseDate(line, 0, 1);
+    data.value = std::stod(this->parseValue(line, 0, 1));
+    data.dateInDecimal = dateToDecimal(data.date);
+    this->database[data.dateInDecimal] = data;
+  }
+}
+
+std::map<long, t_data_input> BitcoineExchange::getDatabase() {
+  return this->database;
 }

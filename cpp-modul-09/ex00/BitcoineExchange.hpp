@@ -20,16 +20,19 @@
 typedef struct t_data_input {
   std::string   date;
   long          dateInDecimal;
-  float         value;
+  double         value;
   int           type;
   std::string   fullDate;
 } t_data_input;
 
 class BitcoineExchange {
     private :
+      int mapSize;
       std::string fileName;
-      std::multiset<t_data_input> dataContainer;
+      std::map<long, t_data_input> dataContainer;
+      std::map<long, t_data_input> database;
       std::ifstream fileObj;
+
       std::string parseDate(std::string & line, int counter, int isdb);
       std::string parseValue(std::string & line, int counter, int isdb);
       long dateToDecimal(std::string  & str);
@@ -43,13 +46,14 @@ class BitcoineExchange {
       BitcoineExchange(BitcoineExchange const &src);
       BitcoineExchange &operator=(BitcoineExchange const &src);
       ~BitcoineExchange();
+      void parseDataBase(std::string & file);
       BitcoineExchange(std::string file);
-      void push_to_vector(std::multiset<double> & set, BitcoineExchange & bitcoin);
       void open(std::string file);
-      void parse(int isdb);
-      void push(t_data_input & data);
+      void parse(int isdb,  std::map<long, t_data_input> & bitcoin);
+      void push(t_data_input & data,  std::map<long, t_data_input> & bitcoin, int isbtc);
       void display();
       void getPriceOfDay(BitcoineExchange & bitcoin);
+      std::map<long, t_data_input> getDatabase();
   };
 
 #endif
