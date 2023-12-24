@@ -6,7 +6,7 @@
 /*   By: mamazzal <mamazzal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/23 21:25:01 by mamazzal          #+#    #+#             */
-/*   Updated: 2023/12/19 10:14:54 by mamazzal         ###   ########.fr       */
+/*   Updated: 2023/12/22 11:35:10 by mamazzal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ Span::Span(Span const &src){
 Span & Span::operator=(Span const &src){
   if (this != &src) {
     this->max = src.max;
+    this->integers = src.integers;
   }
   return *this;
 }

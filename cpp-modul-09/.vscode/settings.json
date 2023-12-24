@@ -1,5 +1,6 @@
 {
   "files.associations": {
+    "vector": "cpp",
     "__bit_reference": "cpp",
     "__config": "cpp",
     "__debug": "cpp",
@@ -46,6 +47,7 @@
     "iterator": "cpp",
     "limits": "cpp",
     "locale": "cpp",
+    "map": "cpp",
     "memory": "cpp",
     "mutex": "cpp",
     "new": "cpp",
@@ -64,10 +66,6 @@
     "type_traits": "cpp",
     "typeinfo": "cpp",
     "unordered_map": "cpp",
-    "utility": "cpp",
-    "vector": "cpp",
-    "map": "cpp",
-    "unordered_set": "cpp",
-    "filesystem": "cpp"
+    "utility": "cpp"
   }
 }

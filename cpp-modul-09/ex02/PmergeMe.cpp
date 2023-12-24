@@ -34,17 +34,36 @@ void PmergeMe::displayNumbers() {
 
 void PmergeMe::mergeAndSortPairsVector(std::vector<int> & vec, size_t size) {
   if (size * 2 > vec.size()) return;
-  std::vector<std::pair<std::vector<int>, std::vector<int> > > pairs;
-
   std::vector<int> tmp;
-  //push the odd umbers to tempory 
+
   if (vec.size() % (size * 2) != 0) {
     tmp.insert(tmp.begin(), vec.end() - size, vec.end());
     vec.erase(vec.end() - size, vec.end());
   }
-  pairs = createPairs(vec, size);
+
+  std::vector<std::vector<int> > pairs;
+  for (size_t i = 0; i < vec.size(); i += size * 2) {
+    std::vector<int> firs, secnd, resu;
+    for (size_t j = i; j < i + size; j++)
+      firs.push_back(vec[j]);
+    for (size_t j = i + size; j < i + (size * 2); j++)
+      secnd.push_back(vec[j]);
+    if (firs.back() > secnd.back()) {
+      std::swap(firs, secnd);
+    }
+    comparizonCound++;
+    for (size_t j = 0; j < size; j++)
+      resu.push_back(firs[j]);
+    for (size_t j = 0; j < size; j++)
+      resu.push_back(secnd[j]);
+    pairs.push_back(resu);
+  }
   vec.clear();
-  vec = pairsToVector(pairs, size);
+  for (size_t i = 0; i < pairs.size(); i++) {
+    std::vector<int> & subvec = pairs[i];
+    for (size_t j = 0; j < subvec.size(); j++)
+      vec.push_back(subvec[j]);
+  }
   mergeAndSortPairsVector(vec, size * 2);
 
   //split the collection to parts
@@ -117,17 +136,36 @@ void PmergeMe::mergeAndSortPairsVector(std::vector<int> & vec, size_t size) {
 //container deque
 void PmergeMe::mergeAndSortPairsDeque(std::deque<int> & deq, size_t size) {
   if (size * 2 > deq.size()) return;
-  std::deque<std::pair<std::deque<int>, std::deque<int> > > pairs;
 
   std::deque<int> tmp;
-  //push the odd umbers to tempory 
   if (deq.size() % (size * 2) != 0) {
     tmp.insert(tmp.begin(), deq.end() - size, deq.end());
     deq.erase(deq.end() - size, deq.end());
   }
-  pairs = createPairsDeque(deq, size);
+
+  std::deque<std::deque<int> > pairs;
+  for (size_t i = 0; i < deq.size(); i += size * 2) {
+    std::deque<int> firs, secnd, resu;
+    for (size_t j = i; j < i + size; j++)
+      firs.push_back(deq[j]);
+    for (size_t j = i + size; j < i + (size * 2); j++)
+      secnd.push_back(deq[j]);
+    if (firs.back() > secnd.back()) {
+      std::swap(firs, secnd);
+    }
+    comparizonCoundDeque++;
+    for (size_t j = 0; j < size; j++)
+      resu.push_back(firs[j]);
+    for (size_t j = 0; j < size; j++)
+      resu.push_back(secnd[j]);
+    pairs.push_back(resu);
+  }
   deq.clear();
-  deq = pairsToDeque(pairs, size);
+  for (size_t i = 0; i < pairs.size(); i++) {
+    std::deque<int> & subvec = pairs[i];
+    for (size_t j = 0; j < subvec.size(); j++)
+      deq.push_back(subvec[j]);
+  }
   mergeAndSortPairsDeque(deq, size * 2);
 
   //split the collection to parts
