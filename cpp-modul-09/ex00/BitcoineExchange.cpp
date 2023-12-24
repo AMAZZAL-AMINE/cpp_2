@@ -137,7 +137,7 @@ bool BitcoineExchange::checkDateRange(std::string & date) {
   _month = toInt(month);
   _day = toInt(day);
 
-  if (year.length() != 4 || _year > 2023 || _year < 2009)
+  if (year.length() != 4 || _year < 2009)
     return 1;
   if (month.length() != 2 || _month > 12 || _month < 1)
     return 1;
